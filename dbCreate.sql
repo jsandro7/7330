@@ -37,8 +37,7 @@ CREATE TABLE IF NOT EXISTS degree_course (
 -- Creating degree table
 CREATE TABLE IF NOT EXISTS semester (
 	semester_code VARCHAR(10) PRIMARY KEY,
-    name VARCHAR(255),
-    level VARCHAR(255)
+    name VARCHAR(255)
 );
 
 -- Creating degree table
@@ -73,9 +72,8 @@ CREATE TABLE IF NOT EXISTS teaches (
 
 
 -- Creating goal table
-CREATE TABLE IF NOT EXISTS goal (
-    code VARCHAR(50) PRIMARY KEY,
-    name VARCHAR(255),
+CREATE TABLE IF NOT EXISTS goal (    
+    name VARCHAR(255) PRIMARY KEY,
     level VARCHAR(255),
     description TEXT,
     CONSTRAINT FK_goal_name FOREIGN KEY (name) REFERENCES degree(name)
