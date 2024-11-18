@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 import config as cfg
 import mysql.connector
 from mysql.connector import errorcode
