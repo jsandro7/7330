@@ -4,7 +4,7 @@ USE degrees;
 
 CREATE USER IF NOT EXISTS '7330Team'@'localhost' IDENTIFIED BY 'smu-team';
 
-GRANT ALL PRIVILEGES ON degrees TO '7330Team'@'localhost';
+GRANT ALL PRIVILEGES ON degrees.* TO '7330Team'@'localhost';
 
 DROP TABLE IF EXISTS `degree_course`;
 DROP TABLE IF EXISTS `teaches`;

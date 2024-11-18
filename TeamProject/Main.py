@@ -37,7 +37,7 @@ def get_degrees(conn):
 
 db_conn = setup_db_connection(cfg.mysql["user"], cfg.mysql["password"], cfg.mysql["host"], cfg.mysql["db"])
 
-print("welcome to " + db_conn.get_server_info())
+#print("welcome to " + db_conn.get_server_info())
 
 
 
