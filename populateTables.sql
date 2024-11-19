@@ -3,35 +3,48 @@ INSERT INTO degree (
     level
 )
 VALUES
-	('B.A. Computer Science','BA'),
-    ('B.S. Computer Science','BS'), 
-    ('M.S. Computer Science','MS'),
-    ('Ph.D. Computer Science','Ph.D'),
-    ('B.S. Electrical & Computer Engineering','BS'), 
-    ('M.S Electrical Engineering','MS'),
-    ('Ph.D. Computer Engineering','Ph.D');
+	('Computer Science','BA'),
+    ('Computer Science','BS'), 
+    ('Computer Science','MS'),
+    ('Computer Science','Ph.D'),
+    ('Electrical & Computer Engineering','BS'), 
+    ('Electrical Engineering','MS'),
+    ('Computer Engineering','Ph.D');
+    
+
+INSERT INTO goal(
+	goal,
+	name,
+    level,
+    description
+)
+VALUES
+('112A', 'Computer Science','BS', 'Goal for BS CS'),
+('235B', 'Computer Science','MS', 'Goal for MS CS'),
+('3569','Computer Science','Ph.D', 'Goal for Ph.D CS');
 
 INSERT INTO course (
     course_id,
     name)
 VALUES 
-	(7330,'File Organ Data Base Man'), 
-	(5330, 'File Organ Data Base Man'), 
-    (3330, 'File Organ Data Base Man'), 
-    (7343, 'Operating Systems'), 
-    (5343,'Operating Systems');
+	('001C-7330','File Organ Data Base Man'), 
+	('001C-5330', 'File Organ Data Base Man'), 
+    ('001C-3330', 'File Organ Data Base Man'), 
+    ('401-7343', 'Operating Systems'), 
+    ('401-5343','Operating Systems');
 
 INSERT INTO degree_course (
-    name,
-    course_id
+   level,
+   name,
+   course_id
 )
 VALUES 
-	('B.S. Computer Science',5330), 
-	('B.A. Computer Science',3330),
-    ('M.S. Computer Science',7330), 
-    ('M.S. Computer Science',7343), 
-    ('B.S. Computer Science',5343),
-    ('B.S. Electrical & Computer Engineering',7343);
+	('BS','Computer Science','001C-5330'), 
+	('BA','Computer Science','001C-3330'),
+    ('MS','Computer Science','001C-7330'), 
+    ('MS','Computer Science','401-7343'), 
+    ('BS','Computer Science','401-5343'),
+    ('BS','Electrical & Computer Engineering','401-7343');
     
 
 INSERT INTO semester (
@@ -60,9 +73,9 @@ INSERT INTO section (
     student_enrolled
 )
 VALUES
-	('405',7330,'2024-SPG',31),
-    ('415',7343, '2024-SPG',27),
-    ('425',5330, '2024-SPG',21);
+	('405','001C-7330','2024-SPG',31),
+    ('415','401-7343', '2024-SPG',27),
+    ('425','401-5343', '2024-SPG',21);
     
 INSERT INTO teaches (
     section_id,
@@ -71,5 +84,7 @@ INSERT INTO teaches (
     ID
 )
 VALUES
-	('405',7330,'2024-SPG',5355),
-    ('415',7343,'2024-SPG',2156);
+	('405','001C-7330','2024-SPG',5355),
+    ('415','401-7343','2024-SPG',2156);
+
+
