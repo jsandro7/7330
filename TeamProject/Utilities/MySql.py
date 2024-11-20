@@ -1,6 +1,6 @@
 from mysql.connector import errorcode
 import mysql.connector
-from TeamProject.Utilities import Config as cfg
+from Utilities import Config as cfg
 
 def setup_db_connection(user, password, host, database):
     try:

@@ -1,5 +1,5 @@
 from nicegui import ui
-from TeamProject.Utilities import MySql
+from Utilities import MySql
 
 def get_goal():
     conn = MySql.create_conn()

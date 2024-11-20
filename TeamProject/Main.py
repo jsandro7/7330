@@ -1,6 +1,6 @@
 from nicegui import ui
 import Menu
-from TeamProject.Pages import Course, Degree, Section, Instructor, Goal
+from Pages import Course, Degree, Section, Instructor, Goal
 
 @ui.page('/')
 def index_page() -> None:
