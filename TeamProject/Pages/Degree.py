@@ -90,7 +90,7 @@ def page():
 
     rowsCourse = []
 
-    async def add_row(r):
+    async def add_row():
 
         with ui.dialog() as dialog, ui.card():
             first = ui.input(label="Type Degree Name")
