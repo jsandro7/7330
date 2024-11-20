@@ -2,6 +2,8 @@ CREATE SCHEMA IF NOT EXISTS degrees;
 
 USE degrees;
 
+DROP USER IF EXISTS '7330Team'@'localhost';
+
 CREATE USER IF NOT EXISTS '7330Team'@'localhost' IDENTIFIED BY 'Smu-Team2024!';
 
 GRANT ALL PRIVILEGES ON degrees.* TO '7330Team'@'localhost';
