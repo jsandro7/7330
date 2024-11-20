@@ -6,9 +6,11 @@ def get_degrees(conn):
 
     stmt = """
     SELECT
-        name,
-        level
-    FROM degree    
+        section_id,
+        course_id,
+        semester_code,
+        student_enrolled
+    FROM section    
     """
 
     cursor.execute(stmt)
@@ -21,8 +23,10 @@ def page(conn):
     rows = get_degrees(conn)
 
     columns = [
-        {'field': 'name', 'editable': True, 'sortable': True},
-        {'field': 'level', 'editable': True},
+        {'field': 'section_id', 'editable': False, 'sortable': True},
+        {'field': 'course_id', 'editable': False, 'sortable': True},
+        {'field': 'semester_code', 'editable': False},
+        {'field': 'student_enrolled', 'editable': True},
     ]
 
     def add_row():

@@ -1,7 +1,11 @@
 from nicegui import ui
 
-def menu() -> None:
-    ui.link('Home', '/').classes(replace='text-blue')
-    ui.link('Course', '/course').classes(replace='text-blue')
-    ui.link('Instructor', '/instructor').classes(replace='text-blue')
-    ui.link('Section', '/section').classes(replace='text-blue')
+def create_menu() -> None:
+    with ui.button(icon='menu'):
+        with ui.menu().props('auto-close'):
+            ui.menu_item("Home", lambda:  ui.navigate.to("/"))
+            ui.menu_item("Course", lambda: ui.navigate.to("/course"))
+            ui.menu_item("Section", lambda: ui.navigate.to("/section"))
+            ui.menu_item("Instructor", lambda: ui.navigate.to("/instructor"))
+            ui.menu_item("Goals", lambda: ui.navigate.to("/goal"))
+
