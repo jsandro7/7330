@@ -1,7 +1,8 @@
 from nicegui import ui
-from nicegui.events import ValueChangeEventArguments
+from TeamProject.Utilities import MySql
 
-def get_instructor(conn):
+def get_instructor():
+    conn = MySql.create_conn()
     cursor = conn.cursor(dictionary=True)
 
     stmt = """
@@ -14,11 +15,12 @@ def get_instructor(conn):
     cursor.execute(stmt)
     rows = cursor.fetchall()
 
+    conn.close()
     return rows
 
-def page(conn):
+def page():
 
-    rows = get_instructor(conn)
+    rows = get_instructor()
 
     columns = [
         {'field': 'ID', 'editable': False, },
@@ -26,9 +28,7 @@ def page(conn):
     ]
 
     def add_row():
-        new_id = max((dx['id'] for dx in rows), default=-1) + 1
-        rows.append({'id': new_id, 'name': 'New name', 'age': None})
-        ui.notify(f'Added row with ID {new_id}')
+
         aggrid.update()
 
     def handle_cell_value_change(e):

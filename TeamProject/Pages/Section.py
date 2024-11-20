@@ -1,7 +1,8 @@
 from nicegui import ui
-from nicegui.events import ValueChangeEventArguments
+from TeamProject.Utilities import MySql
 
-def get_degrees(conn):
+def get_degrees():
+    conn = MySql.create_conn()
     cursor = conn.cursor(dictionary=True)
 
     stmt = """
@@ -16,11 +17,12 @@ def get_degrees(conn):
     cursor.execute(stmt)
     rows = cursor.fetchall()
 
+    conn.close()
     return rows
 
-def page(conn):
+def page():
 
-    rows = get_degrees(conn)
+    rows = get_degrees()
 
     columns = [
         {'field': 'section_id', 'editable': False, 'sortable': True},

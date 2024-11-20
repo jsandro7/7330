@@ -1,5 +1,6 @@
 from mysql.connector import errorcode
 import mysql.connector
+from TeamProject.Utilities import Config as cfg
 
 def setup_db_connection(user, password, host, database):
     try:
@@ -12,3 +13,9 @@ def setup_db_connection(user, password, host, database):
             print("Database does not")
         else:
             print("Something is wrong with your user name or")
+
+
+def create_conn():
+    conn = setup_db_connection(cfg.mysql["user"], cfg.mysql["password"], cfg.mysql["host"], cfg.mysql["db"])
+
+    return conn

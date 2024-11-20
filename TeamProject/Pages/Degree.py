@@ -1,7 +1,8 @@
 from nicegui import ui
-from nicegui.events import ValueChangeEventArguments
+from TeamProject.Utilities import MySql
 
-def get_degrees(conn):
+def get_degrees():
+    conn = MySql.create_conn()
     cursor = conn.cursor(dictionary=True)
 
     stmt = """
@@ -14,10 +15,13 @@ def get_degrees(conn):
     cursor.execute(stmt)
     rows = cursor.fetchall()
 
+    conn.close()
+
     return rows
 
 
-def insert_degree(conn, args):
+def insert_degree(args):
+    conn = MySql.create_conn()
     cursor = conn.cursor()
 
     stmt = """
@@ -31,19 +35,18 @@ def insert_degree(conn, args):
 
     cursor.execute(stmt, args)
     conn.commit()
+    conn.close()
 
+def page():
 
-
-def page(conn):
-
-    rows = get_degrees(conn)
+    rows = get_degrees()
 
     columns = [
-        {'field': 'name', 'editable': True, 'sortable': True},
-        {'field': 'level', 'editable': True},
+        {'field': 'name', 'editable': False, 'sortable': True},
+        {'field': 'level', 'editable': False, 'sortable': True},
     ]
 
-    async def add_row():
+    async def add_row(r):
 
         with ui.dialog() as dialog, ui.card():
             first = ui.input(label="Type Degree Name")
@@ -54,8 +57,10 @@ def page(conn):
 
 
         result = await dialog
-        insert_degree(conn, result)
-        r = get_degrees(conn)
+        insert_degree(result)
+
+        rows.clear()
+        rows.extend(get_degrees())
         aggrid.update()
 
 
@@ -73,7 +78,7 @@ def page(conn):
     aggrid = ui.aggrid({
         'columnDefs': columns,
         'rowData': rows,
-        'rowSelection': 'multiple',
+        'rowSelection': 'single',
         'stopEditingWhenCellsLoseFocus': True,
     }).on('cellValueChanged', handle_cell_value_change)
 
