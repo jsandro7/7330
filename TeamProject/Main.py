@@ -1,6 +1,9 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from nicegui import ui
 import Menu
-from Pages import Course, Degree, Section, Instructor, Goal
+from TeamProject.Pages import Course, Degree, Section, Instructor, Goal
 
 @ui.page('/')
 def index_page() -> None:
