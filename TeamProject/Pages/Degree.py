@@ -58,6 +58,25 @@ def insert_degree(args):
     conn.commit()
     conn.close()
 
+def insert_degree_course(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor()
+
+    stmt = """
+    INSERT INTO degree_course
+    (
+        course_id,
+        name,
+        level        
+    )
+    VALUES (%s, %s, %s)    
+    """
+
+    cursor.execute(stmt, args)
+    conn.commit()
+    conn.close()
+
+
 def delete_degree(args):
     conn = MySql.create_conn()
     cursor = conn.cursor()
@@ -140,7 +159,24 @@ def page():
         aggrid.update()
 
     async def add_course(r):
-        pass
+        with ui.dialog() as dialog, ui.card():
+            first = ui.input(label="Type Course Id")
+            with ui.row():
+                ui.button('Save', on_click=lambda: dialog.submit([first.value]))
+                ui.button('Cancel', on_click=lambda: dialog.close)
+
+
+        result = await dialog
+
+        selectedDegree = [row for row in await aggrid.get_selected_rows()][0]
+
+        result.extend([selectedDegree['name'], selectedDegree['level']])
+
+        insert_degree_course(result)
+
+        rowsCourse.clear()
+        rowsCourse.extend(get_degrees_courses([selectedDegree['name'], selectedDegree['level']]))
+        aggridCourse.update()
 
     async def deleteCourse_selected():
         selected = [row for row in await aggridCourse.get_selected_rows()][0]
