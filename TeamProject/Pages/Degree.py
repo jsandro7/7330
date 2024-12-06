@@ -71,6 +71,18 @@ def delete_degree(args):
     conn.commit()
     conn.close()
 
+def delete_degree_course(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor()
+
+    stmt = """
+    DELETE FROM degree_course
+    WHERE name = %s AND level = %s AND course_id = %s
+    """
+
+    cursor.execute(stmt, args)
+    conn.commit()
+    conn.close()
 
 
 
@@ -90,6 +102,8 @@ def page():
 
     rowsCourse = []
 
+    #Event Handlers
+
     async def add_row():
 
         with ui.dialog() as dialog, ui.card():
@@ -106,7 +120,6 @@ def page():
         rows.clear()
         rows.extend(get_degrees())
         aggrid.update()
-
 
     async def handle_row_select_change(e):
         selected = [row for row in await aggrid.get_selected_rows()][0]
@@ -130,7 +143,17 @@ def page():
         pass
 
     async def deleteCourse_selected():
-        pass
+        selected = [row for row in await aggridCourse.get_selected_rows()][0]
+        selectedDegree = [row for row in await aggrid.get_selected_rows()][0]
+
+        delete_degree_course([selectedDegree['name'], selectedDegree['level'], selected['course_id']])        
+
+        rowsCourse.clear()
+        rowsCourse.extend(get_degrees_courses([selectedDegree['name'], selectedDegree['level']]))
+        aggridCourse.update()
+
+
+    #Form Elements
 
     with ui.row().classes('items-left'):
         ui.button('Delete selected', on_click=delete_selected)
