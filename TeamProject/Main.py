@@ -1,9 +1,11 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from nicegui import ui
+from nicegui import ui, app
 import Menu
 from TeamProject.Pages import Course, Degree, Section, Instructor, Goal
+
+app.on_exception(ui.notify)
 
 @ui.page('/')
 def index_page() -> None:
