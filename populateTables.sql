@@ -69,22 +69,22 @@ VALUES
 INSERT INTO section (
     section_id,
     course_id,
-    semester_code,
+    semester,
+	year,
     student_enrolled
 )
 VALUES
-	('405','001C-7330','2024-SPG',31),
-    ('415','401-7343', '2024-SPG',27),
-    ('425','401-5343', '2024-SPG',21);
+	('405','001C-7330','SP', 2024,31),
+    ('415','401-7343', 'FA',2024,27),
+    ('425','401-5343', 'SM',2024,21);
     
 INSERT INTO teaches (
     section_id,
     course_id,
-    semester_code,
     ID
 )
 VALUES
-	('405','001C-7330','2024-SPG',5355),
-    ('415','401-7343','2024-SPG',2156);
+	('405','001C-7330',5355),
+    ('415','401-7343',2156);
 
 
