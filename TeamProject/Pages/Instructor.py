@@ -26,21 +26,35 @@ def page():
         {'field': 'ID', 'editable': False, },
         {'field': 'name', 'editable': True, 'sortable': True},
     ]
+    
+    columnsCourse = [
+        {'field': 'section_id', 'editable': False, 'sortable': True},
+        {'field': 'courseId', 'editable': False, 'sortable': True},
+        {'field': 'semester_code', 'editable': False, 'sortable': True},
+    ]
 
-    def add_row():
+    rowsCourse = []
 
-        aggrid.update()
+    async def add_row():
+        pass
 
-    def handle_cell_value_change(e):
-        new_row = e.args['data']
-        ui.notify(f'Updated row to: {e.args["data"]}')
-        rows[:] = [row | new_row if row['id'] == new_row['id'] else row for row in rows]
+    async def handle_cell_value_change(e):
+        pass
 
     async def delete_selected():
-        selected_id = [row['id'] for row in await aggrid.get_selected_rows()]
-        rows[:] = [row for row in rows if row['id'] not in selected_id]
-        ui.notify(f'Deleted row with ID {selected_id}')
-        aggrid.update()
+        pass
+
+    async def deleteTeaches_selected():
+        pass
+
+    async def add_Teaches():
+        pass
+    
+
+    with ui.row().classes('items-left'):
+        ui.button('Delete selected', on_click=delete_selected)
+        ui.button('Add Degree', on_click=add_row)
+        ui.label('Current Instructors')
 
     aggrid = ui.aggrid({
         'columnDefs': columns,
@@ -49,5 +63,14 @@ def page():
         'stopEditingWhenCellsLoseFocus': True,
     }).on('cellValueChanged', handle_cell_value_change)
 
-    ui.button('Delete selected', on_click=delete_selected)
-    ui.button('New row', on_click=add_row)
+    with ui.row().classes('items-left'):
+        ui.button('Remove course from degree', on_click=deleteTeaches_selected)
+        ui.button('Add Course to Degree', on_click=add_Teaches)
+        ui.label('Assigned Courses')
+
+    aggridCourse = ui.aggrid({
+        'columnDefs': columnsCourse,
+        'rowData': rowsCourse,
+        'rowSelection': 'single',
+        'stopEditingWhenCellsLoseFocus': True,
+    })
