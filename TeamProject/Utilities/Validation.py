@@ -73,7 +73,7 @@ def check_entries(ui, entries):
     """Validate all entries and enable/disable the submit button."""
     all_valid = True
     for field, entry in entries.items():
-        is_valid = validate_non_empty(entry) and validation_functions.get(field, lambda e: True)(ui, entry)
+        is_valid = validate_non_empty(entry) and validation_functions.get(field, lambda e: True)(entry)
         if not is_valid:
             ui.notify(f'Formatting issue with {field}')
         all_valid &= is_valid
