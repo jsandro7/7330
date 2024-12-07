@@ -1,5 +1,5 @@
 from nicegui import ui
-from TeamProject.Utilities import MySql
+from TeamProject.Utilities import MySql, Validation
 
 def get_degrees():
     conn = MySql.create_conn()
