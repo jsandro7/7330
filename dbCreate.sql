@@ -2,11 +2,7 @@ CREATE SCHEMA IF NOT EXISTS degrees;
 
 USE degrees;
 
-DROP USER IF EXISTS '7330Team'@'localhost';
 
-CREATE USER IF NOT EXISTS '7330Team'@'localhost' IDENTIFIED BY 'Smu-Team2024!';
-
-GRANT ALL PRIVILEGES ON degrees.* TO '7330Team'@'localhost';
 
 DROP TABLE IF EXISTS `degree_course`;
 DROP TABLE IF EXISTS `teaches`;
@@ -15,7 +11,6 @@ DROP TABLE IF EXISTS `goal`;
 DROP TABLE IF EXISTS `degree`;
 DROP TABLE IF EXISTS `instructor`;
 DROP TABLE IF EXISTS `section`;
-DROP TABLE IF EXISTS `semester`;
 DROP TABLE IF EXISTS `course`;
 
 -- Creating degree table
@@ -73,7 +68,7 @@ CREATE TABLE IF NOT EXISTS teaches (
 
 -- Creating goal table
 CREATE TABLE IF NOT EXISTS goal (
-    goal CHAR(4) PRIMARY KEY,    
+    code CHAR(4) PRIMARY KEY,    
     name VARCHAR(255),
     level VARCHAR(255),
     description TEXT,
@@ -83,14 +78,14 @@ CREATE TABLE IF NOT EXISTS goal (
 -- Creating goal table
 CREATE TABLE IF NOT EXISTS evaluation (
     section_id CHAR(3),
-    goal CHAR(4),
+    code CHAR(4),
     evaluation_method VARCHAR(255),
     comment TEXT,
     A_count INT,
 	B_count INT,
     C_count INT,
     F_count INT,
-    PRIMARY KEY (section_id, goal),
+    PRIMARY KEY (section_id, code),
     CONSTRAINT FK_evaluation_section_id FOREIGN KEY (section_id) REFERENCES section(section_id),
-    CONSTRAINT FK_evaluation_goal FOREIGN KEY (goal) REFERENCES goal(goal)
+    CONSTRAINT FK_evaluation_goal FOREIGN KEY (code) REFERENCES goal(code)
 );

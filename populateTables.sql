@@ -13,7 +13,7 @@ VALUES
     
 
 INSERT INTO goal(
-	goal,
+	code,
 	name,
     level,
     description
@@ -46,15 +46,6 @@ VALUES
     ('BS','Computer Science','401-5343'),
     ('BS','Electrical & Computer Engineering','401-7343');
     
-
-INSERT INTO semester (
-	semester_code,    
-    name
-)
-VALUES
-	('2024-SPG','Spring'),
-    ('2024-SUM', 'Summer'),
-    ('2024-FAL','Fall');
     
     
 INSERT INTO instructor (
