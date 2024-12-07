@@ -73,3 +73,5 @@ def check_entries(entries):
     for field, entry in entries.items():
         is_valid = validate_non_empty(entry) and validation_functions.get(field, lambda e: True)(entry)
         all_valid &= is_valid
+    
+    return all_valid
