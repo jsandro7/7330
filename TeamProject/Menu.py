@@ -5,7 +5,8 @@ def create_menu(site_name) -> None:
         ui.label(site_name.upper())
         with ui.button(icon='menu'):
             with ui.menu().props('auto-close').style('width:150px'):
-                ui.menu_item("Degree", lambda:  ui.navigate.to("/"))
+                ui.menu_item("Home", lambda:  ui.navigate.to("/"))
+                ui.menu_item("Degree", lambda:  ui.navigate.to("/degree"))
                 ui.menu_item("Degree Report", lambda:  ui.navigate.to("/degree_report"))
                 ui.menu_item("Course", lambda: ui.navigate.to("/course"))
                 ui.menu_item("Course Report", lambda: ui.navigate.to("/course_report"))

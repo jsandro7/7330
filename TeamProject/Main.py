@@ -3,11 +3,19 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from nicegui import ui, app
 import Menu
-from TeamProject.Pages import Course, CourseReport, Degree, DegreeReport, Evaluations, EvaluationsReport, Instructor, InstructorReport, Goal
+from TeamProject.Pages import Course, CourseReport, Degree, DegreeReport, Home, Evaluations, EvaluationsReport, Instructor, InstructorReport, Goal
+
+
+app.add_static_file(local_file='Logo.png', url_path='/logo.png')
 
 app.on_exception(ui.notify)
 
 @ui.page('/')
+def index_page() -> None:
+    Menu.create_menu('Home Page')
+    Home.page()
+
+@ui.page('/degree')
 def index_page() -> None:
     Menu.create_menu('Current Degrees')
     Degree.page()
@@ -51,7 +59,6 @@ def index_page() -> None:
 def index_page() -> None:
     Menu.create_menu('Evaluations Report')
     EvaluationsReport.page()
-
     
 
 ui.run(title="Degree Evaluator")
