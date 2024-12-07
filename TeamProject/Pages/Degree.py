@@ -84,7 +84,9 @@ def delete_degree_course(args):
     conn.commit()
     conn.close()
 
-
+def handle_save(ui, dialog, inputs):
+    if Validation.check_entries(ui, inputs):
+        dialog.submit([field.value for field in inputs.values()])
 
 def page():
 
@@ -105,13 +107,18 @@ def page():
     #Event Handlers
 
     async def add_row():
-
         with ui.dialog() as dialog, ui.card():
-            first = ui.input(label="Type Degree Name")
-            second = ui.input(label="Type Degree level")
+            inputs = {
+                'Degree Name': ui.input(label='Type Degree Name'),
+                'Degree Level': ui.input(label='Type Degree Level')
+            }
+            # Save and Cancel buttons
             with ui.row():
-                ui.button('Save', on_click=lambda: dialog.submit([first.value, second.value]))
-                ui.button('Cancel', on_click=lambda: dialog.close)
+                ui.button(
+                    'Save',
+                    on_click=lambda: handle_save(ui, dialog, inputs)
+                )
+                ui.button('Cancel', on_click=lambda: dialog.close())
 
 
         result = await dialog
