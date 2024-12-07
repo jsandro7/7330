@@ -50,7 +50,7 @@ def delete_course(args):
 
 def handle_save(ui, dialog, inputs):
     if Validation.check_entries(inputs):
-        dialog.submit([input_widget.value for input_widget in inputs.values()])
+        dialog.submit([field.value for field in inputs.values()])
     else:
         ui.notify("Please fix errors before saving.", color="red")
 
@@ -73,7 +73,7 @@ def page():
             with ui.row():
                 ui.button(
                     'Save',
-                    on_click=handle_save(ui, dialog, inputs)
+                    on_click=lambda: handle_save(ui, dialog, inputs)
                 )
                 ui.button('Cancel', on_click=lambda: dialog.close())
 

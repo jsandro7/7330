@@ -3,34 +3,34 @@ from nicegui import ui
 
 # Validation functions
 def validate_non_empty(entry):
-    return entry.value.strip() != ""
+    return entry.strip() != ""
 
 def validate_degree_name(entry):
-    return entry.value.strip() != ""
+    return entry.strip() != ""
 
 def validate_degree_level(entry):
-    return entry.value.strip() != ""
+    return entry.strip() != ""
 
 def validate_course_id(entry):
-    return bool(re.match(r'^[a-zA-Z]{2,4}\d{4}$', entry.value.strip()))
+    return bool(re.match(r'^[a-zA-Z]{2,4}\d{4}$', entry.strip()))
 
 def validate_course_name(entry):
-    return entry.value.strip() != ""
+    return entry.strip() != ""
 
 def validate_instructor_id(entry):
-    return bool(re.match(r'^\d{8}$', entry.value.strip()))
+    return bool(re.match(r'^\d{8}$', entry.strip()))
 
 def validate_instructor_name(entry):
-    return entry.value.strip() != ""
+    return entry.strip() != ""
 
 def validate_section_id(entry):
-    return entry.value.strip().isdigit() and len(entry.value.strip()) <= 3
+    return entry.strip().isdigit() and len(entry.strip()) <= 3
 
 def validate_semester(entry):
-    return bool(re.match(r'^(FA|SP|SM)$', entry.value.strip()))
+    return bool(re.match(r'^(FA|SP|SM)$', entry.strip()))
 
 def validate_year(entry):
-    year = entry.value.strip()
+    year = entry.strip()
     return (
         year != "" and
         len(year) == 5 and
@@ -40,16 +40,16 @@ def validate_year(entry):
     )
 
 def validate_student_enrolled(entry):
-    return entry.value.strip().isdigit()
+    return entry.strip().isdigit()
 
 def validate_code(entry):
-    return len(entry.value.strip()) == 4
+    return len(entry.strip()) == 4
 
 def validate_goal_description(entry):
-    return entry.value.strip() != ""
+    return entry.strip() != ""
 
 def validate_evaluation_method(entry):
-    return entry.value.strip() != ""
+    return entry.strip() != ""
 
 validation_functions = {
     "Degree Name": validate_degree_name,
