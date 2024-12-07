@@ -9,27 +9,22 @@ app.on_exception(ui.notify)
 
 @ui.page('/')
 def index_page() -> None:
-    Menu.create_menu()
+    Menu.create_menu('Current Degrees')
     Degree.page()
 
 @ui.page('/course')
 def index_page() -> None:
-    Menu.create_menu()
+    Menu.create_menu('Current Courses')
     Course.page()
-
-# @ui.page('/section')
-# def index_page() -> None:
-#     Menu.create_menu()
-#     Section.page()
 
 @ui.page('/instructor')
 def index_page() -> None:
-    Menu.create_menu()
+    Menu.create_menu('Current Instructors')
     Instructor.page()
 
 @ui.page('/goal')
 def index_page() -> None:
-    Menu.create_menu()
+    Menu.create_menu('Current Goals')
     Goal.page()
 
 ui.run(title="Degree Evaluator")

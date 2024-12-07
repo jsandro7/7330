@@ -2,7 +2,9 @@ CREATE SCHEMA IF NOT EXISTS degrees;
 
 USE degrees;
 
+CREATE USER IF NOT EXISTS '7330Team'@'localhost' IDENTIFIED BY 'Smu-Team2024!';
 
+GRANT ALL PRIVILEGES ON degrees.* TO '7330Team'@'localhost';
 
 DROP TABLE IF EXISTS `degree_course`;
 DROP TABLE IF EXISTS `teaches`;

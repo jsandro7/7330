@@ -7,7 +7,7 @@ def get_goal():
 
     stmt = """
     SELECT
-        goal,
+        code,
         name,
         level,
         description
@@ -24,13 +24,21 @@ def get_goal():
 def page():
 
     rows = get_goal()
-
+    
     columns = [
-        {'field': 'goal', 'editable': False, 'sortable': True},
+        {'field': 'code', 'editable': False, 'sortable': True},
         {'field': 'name', 'editable': False, 'sortable': True},
         {'field': 'level', 'editable': False, 'sortable': True},
         {'field': 'description', 'editable': True},
     ]
+
+    rowsEval = []
+
+    columnsEval = [
+        {'field': 'course_id', 'editable': False, 'sortable': True},
+        {'field': 'name', 'editable': False, 'sortable': True},
+    ]
+      
 
     def add_row():
         pass
@@ -41,6 +49,18 @@ def page():
     async def delete_selected():
         pass
 
+    async def delete_eval():
+        pass
+
+    async def add_eval():
+        pass
+
+
+    with ui.row().classes('items-left'):
+        ui.button('Remove Goal', on_click=delete_selected)
+        ui.button('New Goal', on_click=add_row)
+
+
     aggrid = ui.aggrid({
         'columnDefs': columns,
         'rowData': rows,
@@ -48,5 +68,13 @@ def page():
         'stopEditingWhenCellsLoseFocus': True,
     }).on('cellValueChanged', handle_cell_value_change)
 
-    ui.button('Delete selected', on_click=delete_selected)
-    ui.button('New row', on_click=add_row)
+    with ui.row().classes('items-left'):
+        ui.button('Remove Evaluation From Goal', on_click=delete_eval)
+        ui.button('Enter Evaluation To Goal', on_click=add_eval)
+
+    aggridCourse = ui.aggrid({
+        'columnDefs': columnsEval,
+        'rowData': rowsEval,
+        'rowSelection': 'single',
+        'stopEditingWhenCellsLoseFocus': True,
+    })

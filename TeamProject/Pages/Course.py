@@ -124,9 +124,8 @@ def page():
         aggrid.update()
 
     with ui.row().classes('items-left'):
-        ui.button('Delete selected', on_click=delete_selected)
-        ui.button('New Row ', on_click=add_row)
-        ui.label('Current Courses')
+        ui.button('Remove Course', on_click=delete_selected)
+        ui.button('New Course', on_click=add_row)
 
     aggrid = ui.aggrid({
         'columnDefs': columns,

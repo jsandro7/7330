@@ -52,9 +52,8 @@ def page():
     
 
     with ui.row().classes('items-left'):
-        ui.button('Delete selected', on_click=delete_selected)
-        ui.button('Add Degree', on_click=add_row)
-        ui.label('Current Instructors')
+        ui.button('Remove Instructor', on_click=delete_selected)
+        ui.button('New Instructor', on_click=add_row)        
 
     aggrid = ui.aggrid({
         'columnDefs': columns,
@@ -64,9 +63,8 @@ def page():
     }).on('cellValueChanged', handle_cell_value_change)
 
     with ui.row().classes('items-left'):
-        ui.button('Remove course from degree', on_click=deleteTeaches_selected)
-        ui.button('Add Course to Degree', on_click=add_Teaches)
-        ui.label('Assigned Courses')
+        ui.button('Remove Section From Instructor', on_click=deleteTeaches_selected)
+        ui.button('Assign Section To Instructor', on_click=add_Teaches)
 
     aggridCourse = ui.aggrid({
         'columnDefs': columnsCourse,

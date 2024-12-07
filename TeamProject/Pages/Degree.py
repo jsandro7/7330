@@ -209,9 +209,8 @@ def page():
     #Form Elements
 
     with ui.row().classes('items-left'):
-        ui.button('Delete selected', on_click=delete_selected)
-        ui.button('Add Degree', on_click=add_row)
-        ui.label('Current Degrees')
+        ui.button('Remove Degree', on_click=delete_selected)
+        ui.button('New Degree', on_click=add_row)
 
     aggrid = ui.aggrid({
         'columnDefs': columns,
@@ -222,9 +221,8 @@ def page():
 
 
     with ui.row().classes('items-left'):
-        ui.button('Remove course from degree', on_click=deleteCourse_selected)
-        ui.button('Add Course to Degree', on_click=add_course)
-        ui.label('Assigned Courses')
+        ui.button('Remove Course From Degree', on_click=deleteCourse_selected)
+        ui.button('Assign Course To Degree', on_click=add_course)
 
     aggridCourse = ui.aggrid({
         'columnDefs': columnsCourse,
