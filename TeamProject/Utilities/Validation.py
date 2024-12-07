@@ -67,14 +67,9 @@ validation_functions = {
     "Evaluation Method": validate_evaluation_method
 }
 
-def set_entry_validity(entry, is_valid):
-    """Set entry field styling based on validity."""
-    entry.set_color('black' if is_valid else 'red')
-
 def check_entries(entries):
     """Validate all entries and enable/disable the submit button."""
     all_valid = True
     for field, entry in entries.items():
         is_valid = validate_non_empty(entry) and validation_functions.get(field, lambda e: True)(entry)
-        set_entry_validity(entry, is_valid)
         all_valid &= is_valid
