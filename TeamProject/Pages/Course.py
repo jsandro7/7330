@@ -105,7 +105,7 @@ def page():
 
         delete_course([selected['course_id'], selected['name']])
 
-        ui.notify(f'Deleted course with ID {selected['course_id']}')
+        ui.notify(f'Deleted course with ID {selected["course_id"]}')
 
         rows.clear()
         rows.extend(get_course())
