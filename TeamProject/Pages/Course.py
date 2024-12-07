@@ -18,6 +18,26 @@ def get_course():
 
     return rows
 
+def get_course_sections(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor(dictionary=True)
+
+    stmt = """
+    SELECT 
+        c.course_id,
+        c.name
+    FROM section s
+    JOIN course c ON c.course_id = s.course_id
+    WHERE c.course_id = %s
+    """
+
+    cursor.execute(stmt, args)
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return rows
+
 def insert_course(args):
     conn = MySql.create_conn()
     cursor = conn.cursor()
@@ -86,7 +106,7 @@ def page():
     async def handle_row_select_change(e):
         selected = [row for row in await aggrid.get_selected_rows()][0]
 
-        result = get_course([selected['course_id'], selected['name']])
+        result = get_course_sections([selected['course_id']])
 
         rows.clear()
         rows.extend(result)
