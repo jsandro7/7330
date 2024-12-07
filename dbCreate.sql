@@ -7,7 +7,6 @@ CREATE USER IF NOT EXISTS '7330Team'@'localhost' IDENTIFIED BY 'Smu-Team2024!';
 GRANT ALL PRIVILEGES ON degrees.* TO '7330Team'@'localhost';
 
 DROP TABLE IF EXISTS `degree_course`;
-DROP TABLE IF EXISTS `teaches`;
 DROP TABLE IF EXISTS `evaluation`;
 DROP TABLE IF EXISTS `goal`;
 DROP TABLE IF EXISTS `degree`;
@@ -49,24 +48,13 @@ CREATE TABLE IF NOT EXISTS instructor (
 CREATE TABLE IF NOT EXISTS section (
     section_id CHAR(3) PRIMARY KEY,
     course_id CHAR(9),
+    ID CHAR(8),
     semester CHAR(2),
 	year CHAR(4),
     student_enrolled INT,
-    CONSTRAINT FK_section_course_id FOREIGN KEY (course_id) REFERENCES course(course_id)
+    CONSTRAINT FK_section_course_id FOREIGN KEY (course_id) REFERENCES course(course_id),
+    CONSTRAINT FK_section_ID FOREIGN KEY (ID) REFERENCES instructor(ID)
 );
-
-
--- Creating teaches table
-CREATE TABLE IF NOT EXISTS teaches (
-    section_id CHAR(3),
-    course_id CHAR(9),
-    ID CHAR(8),
-    PRIMARY KEY (section_id, course_id, ID),
-    CONSTRAINT FK_teaches_course_id FOREIGN KEY (course_id) REFERENCES course(course_id),
-	CONSTRAINT FK_teaches_section_id FOREIGN KEY (section_id) REFERENCES section(section_id),
-    CONSTRAINT FK_teaches_ID FOREIGN KEY (ID) REFERENCES instructor(ID)
-);
-
 
 -- Creating goal table
 CREATE TABLE IF NOT EXISTS goal (

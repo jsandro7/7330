@@ -23,9 +23,11 @@ VALUES
 ('235B', 'Computer Science','MS', 'Goal for MS CS'),
 ('3569','Computer Science','Ph.D', 'Goal for Ph.D CS');
 
-INSERT INTO course (
+INSERT INTO course 
+(
     course_id,
-    name)
+    name
+)
 VALUES 
 	('CS7330','File Organ Data Base Man'), 
 	('CS5330', 'File Organ Data Base Man'), 
@@ -33,7 +35,8 @@ VALUES
     ('CS7343', 'Operating Systems'), 
     ('CS5343','Operating Systems');
 
-INSERT INTO degree_course (
+INSERT INTO degree_course 
+(
    level,
    name,
    course_id
@@ -60,22 +63,15 @@ VALUES
 INSERT INTO section (
     section_id,
     course_id,
+    ID,
     semester,
 	year,
     student_enrolled
 )
 VALUES
-	('405','CS7330','SP', 2024,31),
-    ('415','CS7343', 'FA',2024,27),
-    ('425','CS5343', 'SM',2024,21);
+	('405','CS7330',5355,'SP', 2024,31),
+    ('415','CS7343',2156,'FA',2024,27),
+    ('425','CS5343',5355,'SM',2024,21);
     
-INSERT INTO teaches (
-    section_id,
-    course_id,
-    ID
-)
-VALUES
-	('405','CS7330',5355),
-    ('415','CS7343',2156);
 
 
