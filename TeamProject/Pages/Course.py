@@ -93,17 +93,11 @@ def page():
         rows.clear()
         rows.extend(result)
         rows.update()
-
-    async def delete_selected():
-        selected_id = [row['id'] for row in await aggrid.get_selected_rows()]
-        rows[:] = [row for row in rows if row['id'] not in selected_id]
-        ui.notify(f'Deleted row with ID {selected_id}')
-        aggrid.update()
     
     async def delete_selected():
         selected = [row for row in await aggrid.get_selected_rows()][0]
 
-        delete_course([selected['course_id'], selected['name']])
+        delete_course([selected['course_id']])
 
         ui.notify(f'Deleted course with ID {selected["course_id"]}')
 
