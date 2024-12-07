@@ -49,10 +49,8 @@ def delete_course(args):
     conn.close()
 
 def handle_save(ui, dialog, inputs):
-    if Validation.check_entries(inputs):
+    if Validation.check_entries(ui, inputs):
         dialog.submit([field.value for field in inputs.values()])
-    else:
-        ui.notify("Please fix errors before saving.", color="red")
 
 def page():
 
