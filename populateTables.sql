@@ -27,11 +27,11 @@ INSERT INTO course (
     course_id,
     name)
 VALUES 
-	('001C-7330','File Organ Data Base Man'), 
-	('001C-5330', 'File Organ Data Base Man'), 
-    ('001C-3330', 'File Organ Data Base Man'), 
-    ('401-7343', 'Operating Systems'), 
-    ('401-5343','Operating Systems');
+	('CS7330','File Organ Data Base Man'), 
+	('CS5330', 'File Organ Data Base Man'), 
+    ('CS3330', 'File Organ Data Base Man'), 
+    ('CS7343', 'Operating Systems'), 
+    ('CS5343','Operating Systems');
 
 INSERT INTO degree_course (
    level,
@@ -39,12 +39,12 @@ INSERT INTO degree_course (
    course_id
 )
 VALUES 
-	('BS','Computer Science','001C-5330'), 
-	('BA','Computer Science','001C-3330'),
-    ('MS','Computer Science','001C-7330'), 
-    ('MS','Computer Science','401-7343'), 
-    ('BS','Computer Science','401-5343'),
-    ('BS','Electrical & Computer Engineering','401-7343');
+	('BS','Computer Science','CS5330'), 
+	('BA','Computer Science','CS3330'),
+    ('MS','Computer Science','CS7330'), 
+    ('MS','Computer Science','CS7343'), 
+    ('BS','Computer Science','CS5343'),
+    ('BS','Electrical & Computer Engineering','CS7343');
     
     
     
@@ -65,9 +65,9 @@ INSERT INTO section (
     student_enrolled
 )
 VALUES
-	('405','001C-7330','SP', 2024,31),
-    ('415','401-7343', 'FA',2024,27),
-    ('425','401-5343', 'SM',2024,21);
+	('405','CS7330','SP', 2024,31),
+    ('415','CS7343', 'FA',2024,27),
+    ('425','CS5343', 'SM',2024,21);
     
 INSERT INTO teaches (
     section_id,
@@ -75,7 +75,7 @@ INSERT INTO teaches (
     ID
 )
 VALUES
-	('405','001C-7330',5355),
-    ('415','401-7343',2156);
+	('405','CS7330',5355),
+    ('415','CS7343',2156);
 
 
