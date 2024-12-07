@@ -161,6 +161,8 @@ def page():
 
         delete_degree([selected['name'], selected['level']])
 
+        ui.notify(f'Deleted degree name {selected["name"]}, level {selected["level"]}')
+
         rows.clear()
         rows.extend(get_degrees())
         aggrid.update()
@@ -195,7 +197,9 @@ def page():
         selected = [row for row in await aggridCourse.get_selected_rows()][0]
         selectedDegree = [row for row in await aggrid.get_selected_rows()][0]
 
-        delete_degree_course([selectedDegree['name'], selectedDegree['level'], selected['course_id']])        
+        delete_degree_course([selectedDegree['name'], selectedDegree['level'], selected['course_id']])    
+
+        ui.notify(f'Deleted course with ID {selected["course_id"]}')    
 
         rowsCourse.clear()
         rowsCourse.extend(get_degrees_courses([selectedDegree['name'], selectedDegree['level']]))
