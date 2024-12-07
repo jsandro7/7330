@@ -17,10 +17,10 @@ def index_page() -> None:
     Menu.create_menu()
     Course.page()
 
-@ui.page('/section')
-def index_page() -> None:
-    Menu.create_menu()
-    Section.page()
+# @ui.page('/section')
+# def index_page() -> None:
+#     Menu.create_menu()
+#     Section.page()
 
 @ui.page('/instructor')
 def index_page() -> None:
