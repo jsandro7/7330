@@ -167,10 +167,16 @@ def page():
 
     async def add_course(r):
         with ui.dialog() as dialog, ui.card():
-            first = ui.input(label="Type Course Id")
+            inputs = {
+                'Course ID': ui.input(label='Type Course ID')
+            }
+            # Save and Cancel buttons
             with ui.row():
-                ui.button('Save', on_click=lambda: dialog.submit([first.value]))
-                ui.button('Cancel', on_click=lambda: dialog.close)
+                ui.button(
+                    'Save',
+                    on_click=lambda: handle_save(ui, dialog, inputs)
+                )
+                ui.button('Cancel', on_click=lambda: dialog.close())
 
 
         result = await dialog
