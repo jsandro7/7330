@@ -9,3 +9,6 @@ def create_menu(site_name) -> None:
                 ui.menu_item("Course", lambda: ui.navigate.to("/course"))
                 ui.menu_item("Instructor", lambda: ui.navigate.to("/instructor"))
                 ui.menu_item("Goals", lambda: ui.navigate.to("/goal"))
+    with ui.footer().style('background-color: #3874c8').classes('justify-between'):
+        ui.label('DEGREE EVALUATOR')
+        ui.label('Copyright © SMU 2024')
