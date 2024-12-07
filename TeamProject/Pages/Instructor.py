@@ -1,5 +1,5 @@
 from nicegui import ui
-from TeamProject.Utilities import MySql
+from TeamProject.Utilities import MySql, Validation
 
 def get_instructor():
     conn = MySql.create_conn()
@@ -11,12 +11,44 @@ def get_instructor():
         name
     FROM instructor    
     """
-
     cursor.execute(stmt)
     rows = cursor.fetchall()
 
     conn.close()
     return rows
+
+def delete_instructor(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor()
+
+    stmt = """
+    DELETE FROM instructor
+    WHERE ID = %s 
+    """
+    cursor.execute(stmt, args)
+    conn.commit()
+    conn.close()
+
+def insert_degree(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor()
+
+    stmt = """
+    INSERT INTO instructor
+    (        
+        ID,
+        name
+    )
+    VALUES (%s, %s)    
+    """
+    cursor.execute(stmt, args)
+    conn.commit()
+    conn.close()
+
+
+def handle_save(ui, dialog, inputs):
+    if Validation.check_entries(ui, inputs):
+        dialog.submit([field.value for field in inputs.values()])
 
 def page():
 
@@ -27,32 +59,41 @@ def page():
         {'field': 'name', 'editable': True, 'sortable': True},
     ]
     
-    columnsCourse = [
-        {'field': 'section_id', 'editable': False, 'sortable': True},
-        {'field': 'courseId', 'editable': False, 'sortable': True},
-        {'field': 'semester_code', 'editable': False, 'sortable': True},
-    ]
-
-    rowsCourse = []
-
     async def add_row():
-        pass
+        with ui.dialog() as dialog, ui.card():
+            inputs = {
+                'Instructor ID': ui.input(label='Type ID'),
+                'Instructor Name': ui.input(label='Type Name')
+            }
+            # Save and Cancel buttons
+            with ui.row():
+                ui.button(
+                    'Save',
+                    on_click=lambda: handle_save(ui, dialog, inputs)
+                )
+                ui.button('Cancel', on_click=lambda: dialog.close())
 
-    async def handle_cell_value_change(e):
-        pass
 
-    async def delete_selected():
-        pass
+        result = await dialog
+        insert_degree(result)
 
-    async def deleteTeaches_selected():
-        pass
+        rows.clear()
+        rows.extend(get_instructor())
+        aggrid.update()
 
-    async def add_Teaches():
-        pass
-    
+    async def delete_row():
+        selected = [row for row in await aggrid.get_selected_rows()][0]
+
+        delete_instructor([selected['ID']])
+
+        ui.notify(f'Deleted instructor ID: {selected["ID"]}, Name: {selected["name"]}')
+
+        rows.clear()
+        rows.extend(get_instructor())
+        aggrid.update()
 
     with ui.row().classes('items-left'):
-        ui.button('Remove Instructor', on_click=delete_selected)
+        ui.button('Remove Instructor', on_click=delete_row)
         ui.button('New Instructor', on_click=add_row)        
 
     aggrid = ui.aggrid({
@@ -60,15 +101,4 @@ def page():
         'rowData': rows,
         'rowSelection': 'multiple',
         'stopEditingWhenCellsLoseFocus': True,
-    }).on('cellValueChanged', handle_cell_value_change)
-
-    with ui.row().classes('items-left'):
-        ui.button('Remove Section From Instructor', on_click=deleteTeaches_selected)
-        ui.button('Assign Section To Instructor', on_click=add_Teaches)
-
-    aggridCourse = ui.aggrid({
-        'columnDefs': columnsCourse,
-        'rowData': rowsCourse,
-        'rowSelection': 'single',
-        'stopEditingWhenCellsLoseFocus': True,
-    })
+    })  

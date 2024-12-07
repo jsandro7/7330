@@ -2,16 +2,16 @@ CREATE SCHEMA IF NOT EXISTS degrees;
 
 USE degrees;
 
-CREATE USER IF NOT EXISTS '7330Team'@'localhost' IDENTIFIED BY 'Smu-Team2024!';
+-- CREATE USER IF NOT EXISTS '7330Team'@'localhost' IDENTIFIED BY 'Smu-Team2024!';
 
-GRANT ALL PRIVILEGES ON degrees.* TO '7330Team'@'localhost';
+-- GRANT ALL PRIVILEGES ON degrees.* TO '7330Team'@'localhost';
 
 DROP TABLE IF EXISTS `degree_course`;
 DROP TABLE IF EXISTS `evaluation`;
 DROP TABLE IF EXISTS `goal`;
 DROP TABLE IF EXISTS `degree`;
-DROP TABLE IF EXISTS `instructor`;
 DROP TABLE IF EXISTS `section`;
+DROP TABLE IF EXISTS `instructor`;
 DROP TABLE IF EXISTS `course`;
 
 -- Creating degree table

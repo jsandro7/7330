@@ -23,6 +23,8 @@ VALUES
 ('235B', 'Computer Science','MS', 'Goal for MS CS'),
 ('3569','Computer Science','Ph.D', 'Goal for Ph.D CS');
 
+
+
 INSERT INTO course 
 (
     course_id,
@@ -56,8 +58,8 @@ INSERT INTO instructor (
     name
 )
 VALUES
-	(2156,'Shaibal Chakrabarty'),
-    (5355,'King Ip Lin');
+	(21561234,'Shaibal Chakrabarty'),
+    (53551234,'King Ip Lin');
 
 
 INSERT INTO section (
@@ -69,9 +71,24 @@ INSERT INTO section (
     student_enrolled
 )
 VALUES
-	('405','CS7330',5355,'SP', 2024,31),
-    ('415','CS7343',2156,'FA',2024,27),
-    ('425','CS5343',5355,'SM',2024,21);
+	('405','CS7330',53551234,'SP', 2024,31),
+    ('415','CS7343',21561234,'FA',2024,27),
+    ('425','CS5343',53551234,'SM',2024,21);
+    
+
+INSERT INTO evaluation(
+	section_id,
+    code,
+    evaluation_method,
+    comment,
+    A_count,
+    B_count,
+    C_count,
+    F_count
+)
+VALUES
+('405', '112A','Report', 'Testing comments', 11, 12, 5, 7),
+('415', '235B','Homework', 'Testing comments 2', 21, 2, 3, 1);
     
 
 

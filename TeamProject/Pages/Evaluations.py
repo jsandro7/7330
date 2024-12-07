@@ -1,5 +1,5 @@
 from nicegui import ui
-from TeamProject.Utilities import MySql
+from TeamProject.Utilities import MySql, Validation
 
 def get_data():
     conn = MySql.create_conn()
@@ -17,7 +17,6 @@ def get_data():
         F_count
     FROM evaluation    
     """
-
     cursor.execute(stmt)
     rows = cursor.fetchall()
 
@@ -27,29 +26,35 @@ def get_data():
 def page():
 
     rows = get_data()
-
+    
     columns = [
-        {'name': 'section_id', 'field': 'section_id', 'label': 'Section'},
-        {'name': 'code', 'field': 'code', 'label': 'Goal Code'},
-        {'name': 'evaluation_method', 'field': 'evaluation_method', 'label': 'Method'},
-        {'name': 'A_count', 'field': 'A_count', 'label': 'A Count'},
-        {'name': 'B_count', 'field': 'B_count', 'label': 'B count'},
-        {'name': 'C_count', 'field': 'C_count', 'label': 'C count'},
-        {'name': 'F_count', 'field': 'F_count', 'label': 'F count'},
-        {'name': 'comment', 'field':'comment', 'label': 'Comments'}       
+        {'name': 'section_id', 'field': 'section_id', 'label': 'Section', 'editable': False},
+        {'name': 'code', 'field': 'code', 'label': 'Goal Code', 'editable': False},
+        {'name': 'evaluation_method', 'field': 'evaluation_method', 'label': 'Method', 'editable': False},
+        {'name': 'A_count', 'field': 'A_count', 'label': 'A Count', 'editable': False},
+        {'name': 'B_count', 'field': 'B_count', 'label': 'B count', 'editable': False},
+        {'name': 'C_count', 'field': 'C_count', 'label': 'C count', 'editable': False},
+        {'name': 'F_count', 'field': 'F_count', 'label': 'F count', 'editable': False},
+        {'name': 'comment', 'field':'comment', 'label': 'Comments', 'editable': False}       
     ]
 
-    async def update():
+    def add_row():
         pass
-    
+
+    def handle_cell_value_change(e):
+        pass
+
+    async def delete_selected():
+        pass
 
     with ui.row().classes('items-left'):
-        ui.button('TODO', on_click=update)
-             
+        ui.button('Remove Evaluation', on_click=delete_selected)
+        ui.button('New Evaluation', on_click=add_row)
 
-    ui.table(
-        rows=rows, columns=columns, 
-        column_defaults={
-        'align': 'left',
-        'headerClasses': 'uppercase text-primary'},
-    )
+
+    aggrid = ui.aggrid({
+        'columnDefs': columns,
+        'rowData': rows,
+        'rowSelection': 'multiple',
+        'stopEditingWhenCellsLoseFocus': True,
+    }).on('cellValueChanged', handle_cell_value_change)

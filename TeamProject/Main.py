@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from nicegui import ui, app
 import Menu
-from TeamProject.Pages import Course, CourseReport, Degree, DegreeReport, Instructor, InstructorReport, Goal, Evaluations
+from TeamProject.Pages import Course, CourseReport, Degree, DegreeReport, Evaluations, EvaluationsReport, Instructor, InstructorReport, Goal
 
 app.on_exception(ui.notify)
 
@@ -46,6 +46,11 @@ def index_page() -> None:
 def index_page() -> None:
     Menu.create_menu('Evaluations')
     Evaluations.page()
+
+@ui.page('/evaluations_report')
+def index_page() -> None:
+    Menu.create_menu('Evaluations Report')
+    EvaluationsReport.page()
 
     
 
