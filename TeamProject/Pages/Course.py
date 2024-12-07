@@ -123,12 +123,14 @@ def page():
         rows.extend(get_course())
         aggrid.update()
 
+    with ui.row().classes('items-left'):
+        ui.button('Delete selected', on_click=delete_selected)
+        ui.button('New Row ', on_click=add_row)
+        ui.label('Current Courses')
+
     aggrid = ui.aggrid({
         'columnDefs': columns,
         'rowData': rows,
         'rowSelection': 'multiple',
         'stopEditingWhenCellsLoseFocus': True,
     }).on('cellValueChanged', handle_row_select_change)
-
-    ui.button('Delete selected', on_click=delete_selected)
-    ui.button('New row', on_click=add_row)
