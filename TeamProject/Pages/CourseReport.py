@@ -1,34 +1,44 @@
 from nicegui import ui
-from TeamProject.Utilities import MySql
+from TeamProject.Utilities import MySql, Validation
 
 
-def get_data(course_id=None, start_semester=None, end_semester=None):
+def get_courses():
     conn = MySql.create_conn()
     cursor = conn.cursor(dictionary=True)
 
-    # Base query to fetch sections
+    # Query to fetch all courses
+    stmt = """
+    SELECT 
+        course_id,
+        name
+    FROM course
+    """
+    
+    cursor.execute(stmt)
+    rows = cursor.fetchall()
+    conn.close()
+
+    return rows
+
+
+def get_filtered_sections(
+    course_id, start_year, start_semester, end_year, end_semester
+):
+    conn = MySql.create_conn()
+    cursor = conn.cursor(dictionary=True)
+
+    # Composite key-based filtering for semesters and years
     stmt = """
     SELECT 
         s.section_id,
         s.semester,
         s.year,
         c.course_id,
-        c.name AS course_name,
-        s.student_enrolled
+        c.name
     FROM section s
     JOIN course c ON c.course_id = s.course_id
-    """
-
-    # Add filters for course and semester range
-    conditions = []
-    params = []
-
-    if course_id:
-        conditions.append("c.course_id = %s")
-        params.append(course_id)
-
-    if start_semester and end_semester:
-        conditions.append("""
+    WHERE 
+        c.course_id = %s AND 
         (s.year * 10 + 
             CASE s.semester
                 WHEN 'SP' THEN 1
@@ -50,85 +60,84 @@ def get_data(course_id=None, start_semester=None, end_semester=None):
                 WHEN 'FA' THEN 3
             END
         )
-        """)
-        start_year, start_sem = int(start_semester[:4]), start_semester[4:]
-        end_year, end_sem = int(end_semester[:4]), end_semester[4:]
-        params.extend([start_year, start_sem, end_year, end_sem])
+    """
 
-    if conditions:
-        stmt += " WHERE " + " AND ".join(conditions)
-
-    cursor.execute(stmt, params)
+    cursor.execute(
+        stmt, (course_id, start_year, start_semester, end_year, end_semester)
+    )
     rows = cursor.fetchall()
-
     conn.close()
+
     return rows
 
 
 def page():
+    # Placeholder for rows to be updated after filtering
+    rows = []
 
-    rows = get_data()  # Load all courses initially
-    current_filter = ui.label('Currently showing all sections.')  # Default label
+    # Fetch courses for dropdown
+    courses = get_courses()
+    course_options = {
+        course["course_id"]: f"{course['course_id']}: {course['name']}"
+        for course in courses
+    }
 
     columns = [
         {"name": "section_id", "field": "section_id", "label": "Section ID"},
         {"name": "semester", "field": "semester", "label": "Semester"},
         {"name": "year", "field": "year", "label": "Year"},
         {"name": "course_id", "field": "course_id", "label": "Course ID"},
-        {"name": "course_name", "field": "course_name", "label": "Course Name"},
-        {"name": "student_enrolled", "field": "student_enrolled", "label": "Students Enrolled"},
+        {"name": "name", "field": "name", "label": "Course Name"},
     ]
 
     async def filter_sections():
-        with ui.dialog() as dialog, ui.card():
-            inputs = {
-                "Course ID": ui.input(label="Course ID (e.g., CS7330)"),
-                "Start Semester": ui.input(label="Start Semester (e.g., 2023SP)"),
-                "End Semester": ui.input(label="End Semester (e.g., 2024FA)"),
-            }
+        # Validate all fields are filled
+        if not (
+            start_year_input.value
+            and start_semester_input.value
+            and end_year_input.value
+            and end_semester_input.value
+            and course_input.value
+        ):
+            ui.notify("All fields are required!", color="negative")
+            return
 
-            with ui.row():
-                ui.button(
-                    "Update",
-                    on_click=lambda: dialog.submit(
-                        {
-                            "course_id": inputs["Course ID"].value,
-                            "start": inputs["Start Semester"].value,
-                            "end": inputs["End Semester"].value,
-                        }
-                    ),
-                )
-                ui.button("Cancel", on_click=lambda: dialog.close())
-
-        result = await dialog
-        if result:
-            filtered_rows = get_data(result["course_id"], result["start"], result["end"])
-            rows.clear()
-            rows.extend(filtered_rows)
-            table.update()
-
-            # Update the filter label
-            course_id = result["course_id"] or "all courses"
-            start_semester = result["start"] or "all semesters"
-            end_semester = result["end"] or "all semesters"
-            current_filter.text = (
-                f"Currently showing sections for course: {course_id}, "
-                f"between {start_semester} and {end_semester}."
+        try:
+            nonlocal rows
+            rows = get_filtered_sections(
+                course_input.value,
+                int(start_year_input.value),
+                start_semester_input.value,
+                int(end_year_input.value),
+                end_semester_input.value,
             )
+            table.rows = rows
+            ui.notify("Filter applied successfully!", color="positive")
+        except Exception as e:
+            ui.notify(f"Error: {e}", color="negative")
 
-    def reset_filter():
-        rows.clear()
-        rows.extend(get_data())  # Reload all courses
-        table.update()
-        current_filter.text = "Currently showing all sections."  # Reset label
-
+    # Input fields
     with ui.row().classes("items-left"):
-        ui.button("Filter Sections", on_click=filter_sections)
-        ui.button("Reset Filter", on_click=reset_filter)
+        course_input = ui.select(
+            course_options, label="Course"
+        ).classes("w-48")
+        start_year_input = ui.input(
+            "Start Year", placeholder="Enter Start Year"
+        ).classes("w-48")
+        start_semester_input = ui.select(
+            ["SP", "SM", "FA"], label="Start Semester"
+        ).classes("w-48")
+        end_year_input = ui.input("End Year", placeholder="Enter End Year").classes(
+            "w-48"
+        )
+        end_semester_input = ui.select(
+            ["SP", "SM", "FA"], label="End Semester"
+        ).classes("w-48")
 
-    # Display current filter above the table
-    current_filter.classes('text-lg font-bold text-primary')
-    
+        # Filter button
+        ui.button("Filter Sections", on_click=filter_sections)
+
+    # Table to display results
     table = ui.table(
         rows=rows,
         columns=columns,
