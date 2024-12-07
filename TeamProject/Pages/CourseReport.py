@@ -6,14 +6,14 @@ def get_courses():
     conn = MySql.create_conn()
     cursor = conn.cursor(dictionary=True)
 
-    # Query to fetch all courses
+    # Query to fetch all courses for dropdown
     stmt = """
     SELECT 
         course_id,
         name
     FROM course
     """
-    
+
     cursor.execute(stmt)
     rows = cursor.fetchall()
     conn.close()
@@ -27,7 +27,6 @@ def get_filtered_sections(
     conn = MySql.create_conn()
     cursor = conn.cursor(dictionary=True)
 
-    # Composite key-based filtering for semesters and years
     stmt = """
     SELECT 
         s.section_id,
@@ -72,10 +71,9 @@ def get_filtered_sections(
 
 
 def page():
-    # Placeholder for rows to be updated after filtering
     rows = []
 
-    # Fetch courses for dropdown
+    # Fetch courses for dropdown in format of COURSEID: NAME
     courses = get_courses()
     course_options = {
         course["course_id"]: f"{course['course_id']}: {course['name']}"
@@ -91,7 +89,6 @@ def page():
     ]
 
     async def filter_sections():
-        # Validate all fields are filled
         if not (
             start_year_input.value
             and start_semester_input.value
@@ -118,9 +115,7 @@ def page():
 
     # Input fields
     with ui.row().classes("items-left"):
-        course_input = ui.select(
-            course_options, label="Course"
-        ).classes("w-48")
+        course_input = ui.select(course_options, label="Course").classes("w-48")
         start_year_input = ui.input(
             "Start Year", placeholder="Enter Start Year"
         ).classes("w-48")
@@ -134,10 +129,8 @@ def page():
             ["SP", "SM", "FA"], label="End Semester"
         ).classes("w-48")
 
-        # Filter button
         ui.button("Filter Sections", on_click=filter_sections)
 
-    # Table to display results
     table = ui.table(
         rows=rows,
         columns=columns,
