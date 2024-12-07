@@ -1,5 +1,5 @@
 from nicegui import ui
-from TeamProject.Utilities import MySql
+from TeamProject.Utilities import MySql, Validation
 
 def get_course():
     conn = MySql.create_conn()
@@ -48,6 +48,12 @@ def delete_course(args):
     conn.commit()
     conn.close()
 
+def handle_save(ui, dialog, inputs):
+    if Validation.check_entries(inputs):
+        dialog.submit([input_widget.value for input_widget in inputs.values()])
+    else:
+        ui.notify("Please fix errors before saving.", color="red")
+
 def page():
 
     rows = get_course()
@@ -59,11 +65,17 @@ def page():
 
     async def add_row():
         with ui.dialog() as dialog, ui.card():
-            first = ui.input(label="Type Course ID")
-            second = ui.input(label="Type Course Name")
+            inputs = {
+                'Course ID': ui.input(label='Type Course ID'),
+                'Course Name': ui.input(label='Type Course Name')
+            }
+            # Save and Cancel buttons
             with ui.row():
-                ui.button('Save', on_click=lambda: dialog.submit([first.value, second.value]))
-                ui.button('Cancel', on_click=lambda: dialog.close)
+                ui.button(
+                    'Save',
+                    on_click=handle_save(ui, dialog, inputs)
+                )
+                ui.button('Cancel', on_click=lambda: dialog.close())
 
 
         result = await dialog
