@@ -180,7 +180,7 @@ def initialize_db():
     ]
 
     for degree in degrees:
-        add_degree(degree[0], degree[1])
+        add_degree([degree[0], degree[1]])
 
     # Course
     courses = [
@@ -203,8 +203,8 @@ def initialize_db():
 
     # Degree-Course
     for course in courses:
-        add_course(course[0], course[1])
-        add_degree_course(course[1].split(' ')[1:].join(' '), 'BA', course[0])
+        add_course([course[0], course[1]])
+        add_degree_course([course[1].split(' ')[1:].join(' '), 'BA', course[0]])
 
     # Instructor
     instructors = [
@@ -216,7 +216,7 @@ def initialize_db():
     ]
 
     for instructor in instructors:
-        add_instructor(instructor[0], instructor[1])
+        add_instructor([instructor[0], instructor[1]])
 
     # Section
     semester = ['FA', 'SP', 'SM']
@@ -229,15 +229,15 @@ def initialize_db():
             yr = year[int(random() * 5)]
             course_id = course[0]
             numstudents = int(random() * 50) + 1
-            add_section(section_id, course_id, sem, yr, numstudents)
+            add_section([section_id, course_id, sem, yr, numstudents])
             # Teaches
-            add_teaches(section_id, course_id, instructors[random() * 5][0])
+            add_teaches([section_id, course_id, instructors[random() * 5][0]])
             # Goal
             code = int(random() * 8 + 1) * 1000 + int(random() * 8 + 1) * 100 + int(random() * 8 + 1) * 10 + i
             name = degrees[int(random() * 5)][0]
             level = 'BA'
             description = f'A goal for {name} with code {code}'
-            add_goal(code, course[1].split(' ')[1:].join(' '), level, description)
+            add_goal([code, course[1].split(' ')[1:].join(' '), level, description]) 
             # Evaluation
             for evaluation in evaluations:
                 num_A = random() * numstudents
@@ -247,5 +247,5 @@ def initialize_db():
                 num_C = random() * numstudents
                 numstudents -= num_C
                 num_F = numstudents
-                add_evaluation(section_id, code, evaluation, 'Random comment', num_A, num_B, num_C, num_F)
+                add_evaluation([section_id, code, evaluation, 'Random comment', num_A, num_B, num_C, num_F])
     
