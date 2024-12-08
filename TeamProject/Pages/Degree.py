@@ -193,12 +193,8 @@ def page():
             return
         
         is_core = int(result.pop())
-
         selectedDegree = [row for row in await aggrid.get_selected_rows()][0]
-
         result.extend([is_core, selectedDegree['name'], selectedDegree['level']])
-
-        print(result)
 
         insert_degree_course(result)
 

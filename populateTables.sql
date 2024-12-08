@@ -18,22 +18,7 @@ VALUES
     ('Data Science','BS'),
     ('Data Science','MS');
 
--- Goals
-INSERT INTO goal(
-    code,
-    name,
-    level,
-    description
-)
-VALUES
-    ('112A', 'Computer Science','BS', 'Goal for BS CS'),
-    ('235B', 'Computer Science','MS', 'Goal for MS CS'),
-    ('3569', 'Computer Science','Ph.D', 'Goal for Ph.D CS'),
-    ('457A', 'Electrical Engineering','MS', 'Goal for MS EE'),
-    ('878C', 'Computer Engineering','Ph.D', 'Goal for Ph.D CE'),
-    ('678D', 'Software Engineering','BS', 'Goal for BS SE'),
-    ('234B', 'Data Science','MS', 'Goal for MS Data Science'),
-    ('789E', 'Mechanical Engineering','MS', 'Goal for MS ME');
+
 
 -- Courses
 INSERT INTO course 
@@ -75,6 +60,24 @@ VALUES
     ('MS','Data Science','CS2235', 1),
     ('BS','Mechanical Engineering','ME3456', 0),
     ('Ph.D','Computer Science','CS1234', 1);
+    
+-- Goals
+INSERT INTO goal(
+    code,
+    name,
+    level,
+    description,
+    course_id
+)
+VALUES
+    ('112A', 'Computer Science','BS', 'Goal for BS CS', 'CS5330'),
+	('235B', 'Computer Science','MS', 'Goal for MS CS', 'CS7330'),
+    ('3569', 'Computer Science','Ph.D', 'Goal for Ph.D CS', 'CS1234'),
+    ('457A', 'Electrical & Computer Engineering','BS', 'Goal for BS EE', 'CS7343'),
+    ('878C', 'Computer Science','Ph.D', 'Goal for Ph.D CS', 'CS1234'),
+    ('678D', 'Software Engineering','MS', 'Goal for MS SE', 'SE5678'),
+    ('234B', 'Data Science','MS', 'Goal for MS Data Science', 'CS2235'),
+    ('789E', 'Mechanical Engineering','BS', 'Goal for BS ME', 'ME3456');
 
 -- Instructors
 INSERT INTO instructor (

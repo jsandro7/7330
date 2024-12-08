@@ -5,10 +5,9 @@ USE degrees;
 -- CREATE USER IF NOT EXISTS '7330Team'@'localhost' IDENTIFIED BY 'Smu-Team2024!';
 
 -- GRANT ALL PRIVILEGES ON degrees.* TO '7330Team'@'localhost';
-
-DROP TABLE IF EXISTS `degree_course`;
 DROP TABLE IF EXISTS `evaluation`;
 DROP TABLE IF EXISTS `goal`;
+DROP TABLE IF EXISTS `degree_course`;
 DROP TABLE IF EXISTS `degree`;
 DROP TABLE IF EXISTS `section`;
 DROP TABLE IF EXISTS `instructor`;
@@ -62,8 +61,9 @@ CREATE TABLE IF NOT EXISTS goal (
     code CHAR(4) PRIMARY KEY,    
     name VARCHAR(255),
     level VARCHAR(255),
+    course_id CHAR(9),
     description TEXT,
-    CONSTRAINT FK_goal_name FOREIGN KEY (name, level) REFERENCES degree(name, level)
+    CONSTRAINT FK_goal_name FOREIGN KEY (name, level, course_id) REFERENCES degree_course(name, level, course_id)
 );
 
 -- Creating goal table
