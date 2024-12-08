@@ -204,7 +204,7 @@ def initialize_db():
     # Degree-Course
     for course in courses:
         add_course([course[0], course[1]])
-        add_degree_course([course[1].split(' ')[1:].join(' '), 'BA', course[0]])
+        add_degree_course([' '.join(course[1].split(' ')[1:]), 'BA', course[0]])
 
     # Instructor
     instructors = [
