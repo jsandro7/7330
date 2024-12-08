@@ -127,6 +127,25 @@ def add_teaches(args):
     conn.commit()
     conn.close()
 
+def add_goal(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor()
+
+    stmt = """
+    INSERT INTO goal
+    (
+        code,
+        name,
+        level,
+        description
+    )
+    VALUES (%s, %s, %s, %s)   
+    """
+
+    cursor.execute(stmt, args)
+    conn.commit()
+    conn.close()
+
 def add_evaluation(args):
     conn = MySql.create_conn()
     cursor = conn.cursor()
@@ -200,19 +219,33 @@ def initialize_db():
         add_instructor(instructor[0], instructor[1])
 
     # Section
-    semester = ["FA", "SP", "SM"]
+    semester = ['FA', 'SP', 'SM']
     year = [2021, 2022, 2023, 2024, 2025]
+    evaluations = ['Homework', 'Project', 'Quiz', 'Oral Presentation', 'Report', 'Mid-term', 'Final Exam']
     for course in courses:
         for i in range(0, 51, 10):
-            section_id = int(random() * 10) + i
+            section_id = int(random() * 8 + 1) * 100 + int(random() * 8 + 1) * 10 + i
             sem = semester[int(random() * 3)]
             yr = year[int(random() * 5)]
             course_id = course[0]
-            numstudents = int(random() * 50)
+            numstudents = int(random() * 50) + 1
             add_section(section_id, course_id, sem, yr, numstudents)
             # Teaches
             add_teaches(section_id, course_id, instructors[random() * 5][0])
-
-    # Goal
-
-    # Evaluation
+            # Goal
+            code = int(random() * 8 + 1) * 1000 + int(random() * 8 + 1) * 100 + int(random() * 8 + 1) * 10 + i
+            name = degrees[int(random() * 5)][0]
+            level = 'BA'
+            description = f'A goal for {name} with code {code}'
+            add_goal(code, course[1].split(' ')[1:].join(' '), level, description)
+            # Evaluation
+            for evaluation in evaluations:
+                num_A = random() * numstudents
+                numstudents -= num_A
+                num_B = random() * numstudents
+                numstudents -= num_B
+                num_C = random() * numstudents
+                numstudents -= num_C
+                num_F = numstudents
+                add_evaluation(section_id, code, evaluation, 'Random comment', num_A, num_B, num_C, num_F)
+    
