@@ -2,7 +2,8 @@ from nicegui import ui
 
 def create_menu(site_name) -> None:
     with ui.header(elevated=True).style('background-color: #3874c8').classes('items-center justify-between'):
-        ui.label(site_name.upper())
+        ui.interactive_image('logo.png').style('width:42px;cursor:pointer;').on('click', lambda:  ui.navigate.to("/"))
+        ui.label(site_name.upper()).style('font-size:22px;')
         with ui.button(icon='menu'):
             with ui.menu().props('auto-close').style('width:150px'):
                 ui.menu_item("Home", lambda:  ui.navigate.to("/"))
@@ -15,7 +16,6 @@ def create_menu(site_name) -> None:
                 ui.menu_item("Degree Report", lambda:  ui.navigate.to("/degree_report"))
                 ui.menu_item("Evaluations Report", lambda: ui.navigate.to("/evaluations_report")) 
                 ui.menu_item("Instructor Report", lambda: ui.navigate.to("/instructor_report"))
-               
     with ui.footer().style('background-color: #3874c8').classes('justify-between'):
         ui.label('DEGREE EVALUATOR')
         ui.label('Copyright © SMU 2024')
