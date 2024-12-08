@@ -27,17 +27,22 @@ def page():
         {'name': 'name', 'field': 'name', 'label': 'Name'}   
     ]
 
-    async def update():
+    async def filter_sections():
         pass
     
 
-    with ui.row().classes('items-left'):
-        ui.button('TODO', on_click=update)
-             
 
-    ui.table(
-        rows=rows, columns=columns, 
-        column_defaults={
-        'align': 'left',
-        'headerClasses': 'uppercase text-primary'},
+    # Input fields
+    with ui.row().classes("items-left"):        
+        start_year_input = ui.input("Start Year", placeholder="Enter Start Year").classes("w-48")
+        start_semester_input = ui.select(["SP", "SM", "FA"], label="Start Semester").classes("w-48")
+        end_year_input = ui.input("End Year", placeholder="Enter End Year").classes("w-48")
+        end_semester_input = ui.select(["SP", "SM", "FA"], label="End Semester").classes("w-48")
+
+        ui.button("Filter Sections", on_click=filter_sections)
+
+    table = ui.table(
+        rows=rows,
+        columns=columns,
+        column_defaults={"align": "left", "headerClasses": "uppercase text-primary"},
     )
