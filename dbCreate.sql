@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS degree_course (
     name VARCHAR(255),
     level VARCHAR(255),
     course_id CHAR(9),
+    is_core BIT DEFAULT 0,
     PRIMARY KEY (name, level, course_id),
     CONSTRAINT FK_degree_course_name FOREIGN KEY (name, level) REFERENCES degree(name, level),   
     CONSTRAINT FK_degree_course_course_id FOREIGN KEY (course_id) REFERENCES course(course_id)

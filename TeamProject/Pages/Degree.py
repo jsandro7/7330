@@ -26,7 +26,8 @@ def get_degrees_courses(args):
     stmt = """
     SELECT 
         c.course_id,
-        c.name
+        c.name,
+        dc.is_core
     FROM degree d
     JOIN degree_course dc ON d.name = dc.name AND d.level = dc.level
     JOIN course c ON c.course_id = dc.course_id  
@@ -66,10 +67,11 @@ def insert_degree_course(args):
     INSERT INTO degree_course
     (
         course_id,
+        is_core,
         name,
-        level        
+        level            
     )
-    VALUES (%s, %s, %s)    
+    VALUES (%s, %s, %s, %s)    
     """
 
     cursor.execute(stmt, args)
@@ -119,6 +121,7 @@ def page():
     columnsCourse = [
         {'field': 'course_id', 'editable': False, 'sortable': True},
         {'field': 'name', 'editable': False, 'sortable': True},
+        {'field': 'is_core', 'editable': False, 'sortable': True},
     ]
 
     rowsCourse = []
@@ -129,7 +132,7 @@ def page():
         with ui.dialog() as dialog, ui.card():
             inputs = {
                 'Degree Name': ui.input(label='Type Degree Name'),
-                'Degree Level': ui.input(label='Type Degree Level')
+                'Degree Level': ui.input(label='Type Degree Level')                
             }
             # Save and Cancel buttons
             with ui.row():
@@ -170,7 +173,8 @@ def page():
     async def add_course(r):
         with ui.dialog() as dialog, ui.card():
             inputs = {
-                'Course ID': ui.input(label='Type Course ID')
+                'Course ID': ui.input(label='Type Course ID'),
+                'Is Core': ui.input(label='Core Course?')
             }
             # Save and Cancel buttons
             with ui.row():
@@ -183,9 +187,18 @@ def page():
 
         result = await dialog
 
+       
+
+        if(not result):
+            return
+        
+        is_core = int(result.pop())
+
         selectedDegree = [row for row in await aggrid.get_selected_rows()][0]
 
-        result.extend([selectedDegree['name'], selectedDegree['level']])
+        result.extend([is_core, selectedDegree['name'], selectedDegree['level']])
+
+        print(result)
 
         insert_degree_course(result)
 

@@ -60,20 +60,21 @@ INSERT INTO degree_course
 (
    level,
    name,
-   course_id
+   course_id,
+   is_core
 )
 VALUES 
-    ('BS','Computer Science','CS5330'), 
-    ('BA','Computer Science','CS3330'),
-    ('MS','Computer Science','CS7330'), 
-    ('MS','Computer Science','CS7343'), 
-    ('BS','Computer Science','CS5343'),
-    ('BS','Electrical & Computer Engineering','CS7343'),
-    ('MS','Software Engineering','SE5678'),
-    ('BS','Data Science','DS4567'),
-    ('MS','Data Science','CS2235'),
-    ('BS','Mechanical Engineering','ME3456'),
-    ('Ph.D','Computer Science','CS1234');
+    ('BS','Computer Science','CS5330', 1), 
+    ('BA','Computer Science','CS3330', 0),
+    ('MS','Computer Science','CS7330', 1), 
+    ('MS','Computer Science','CS7343', 0), 
+    ('BS','Computer Science','CS5343', 0),
+    ('BS','Electrical & Computer Engineering','CS7343', 0),
+    ('MS','Software Engineering','SE5678', 0),
+    ('BS','Data Science','DS4567', 1),
+    ('MS','Data Science','CS2235', 1),
+    ('BS','Mechanical Engineering','ME3456', 0),
+    ('Ph.D','Computer Science','CS1234', 1);
 
 -- Instructors
 INSERT INTO instructor (
