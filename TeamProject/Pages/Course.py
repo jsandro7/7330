@@ -225,7 +225,7 @@ def page():
     }).on('cellValueChanged', handle_row_select_change)
 
     with ui.row().classes('items-left'):
-        ui.button('Remove Section From Course', on_click=deleteCourse_selected)
+        ui.button('Remove Section From Course', on_click=delete_section)
         ui.button('Assign Section To Course', on_click=add_section)
 
     aggridSection = ui.aggrid({
