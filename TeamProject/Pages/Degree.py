@@ -87,6 +87,20 @@ def delete_degree(args):
     conn.commit()
     conn.close()
 
+def update_degree_course(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor()
+
+    stmt = """
+    UPDATE degree_course
+    SET is_core = %s
+    WHERE course_id = %s AND name = %s AND level = %s
+    """
+
+    cursor.execute(stmt, args)
+    conn.commit()
+    conn.close()
+
 def delete_degree_course(args):
     conn = MySql.create_conn()
     cursor = conn.cursor()
@@ -116,7 +130,7 @@ def page():
     columnsCourse = [
         {'field': 'course_id', 'editable': False, 'sortable': True},
         {'field': 'name', 'editable': False, 'sortable': True},
-        {'field': 'is_core', 'editable': False, 'sortable': True},
+        {'field': 'is_core', 'editable': True, 'sortable': True},
     ]
 
     rowsCourse = []
@@ -141,6 +155,8 @@ def page():
         result = await dialog
         insert_degree(result)
 
+        ui.notify(f'Degree added', color="positive")
+
         rows.clear()
         rows.extend(get_degrees())
         aggrid.update()
@@ -159,7 +175,7 @@ def page():
 
         delete_degree([selected['name'], selected['level']])
 
-        ui.notify(f'Deleted degree name {selected["name"]}, level {selected["level"]}')
+        ui.notify(f'Deleted degree name {selected["name"]}, level {selected["level"]}', color="positive")
 
         rows.clear()
         rows.extend(get_degrees())
@@ -193,6 +209,8 @@ def page():
 
         insert_degree_course(result)
 
+        ui.notify(f'Course added', color="positive")
+
         rowsCourse.clear()
         rowsCourse.extend(get_degrees_courses([selectedDegree['name'], selectedDegree['level']]))
         aggridCourse.update()
@@ -203,15 +221,25 @@ def page():
 
         delete_degree_course([selectedDegree['name'], selectedDegree['level'], selected['course_id']])    
 
-        ui.notify(f'Deleted course with ID {selected["course_id"]}')    
+        ui.notify(f'Deleted course with ID {selected["course_id"]}', color="positive")    
 
         rowsCourse.clear()
         rowsCourse.extend(get_degrees_courses([selectedDegree['name'], selectedDegree['level']]))
         aggridCourse.update()
 
 
-    #Form Elements
+    async def update_is_core_change(e):
+        row = e.args["data"]
+        selectedDegree = [row for row in await aggrid.get_selected_rows()][0]
+        
+        update_degree_course([e.args['newValue'], row['course_id'], selectedDegree['name'], selectedDegree['level']])
+        ui.notify(f'Updated degree course Is Core: {e.args['newValue']}', color="positive")
 
+        rowsCourse.clear()
+        rowsCourse.extend(get_degrees_courses([selectedDegree['name'], selectedDegree['level']]))
+        aggridCourse.update()
+
+    #Form Elements
     with ui.row().classes('items-left'):
         ui.button('Remove Degree', on_click=delete_selected)
         ui.button('New Degree', on_click=add_row)
@@ -233,5 +261,5 @@ def page():
         'rowData': rowsCourse,
         'rowSelection': 'single',
         'stopEditingWhenCellsLoseFocus': True,
-    })
+    }).on("cellValueChanged", update_is_core_change)
 
