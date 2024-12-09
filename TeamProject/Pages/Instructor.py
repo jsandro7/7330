@@ -29,7 +29,7 @@ def delete_instructor(args):
     conn.commit()
     conn.close()
 
-def insert_degree(args):
+def insert_instructor(args):
     conn = MySql.create_conn()
     cursor = conn.cursor()
 
@@ -40,6 +40,20 @@ def insert_degree(args):
         name
     )
     VALUES (%s, %s)    
+    """
+    cursor.execute(stmt, args)
+    conn.commit()
+    conn.close()
+
+def update_instructor(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor()
+
+    stmt = """
+    UPDATE instructor
+    SET 
+        name = %s
+    WHERE ID = %s
     """
     cursor.execute(stmt, args)
     conn.commit()
@@ -75,12 +89,24 @@ def page():
 
 
         result = await dialog
-        insert_degree(result)
+        insert_instructor(result)
 
         rows.clear()
         rows.extend(get_instructor())
         aggrid.update()
 
+    
+    async def update_name_change(e):
+        row = e.args["data"]
+
+        update_instructor([e.args['newValue'], row['ID']])
+        ui.notify(f'Updated instructor Name: {e.args['newValue']}')
+
+        rows.clear()
+        rows.extend(get_instructor())
+        aggrid.update()
+
+       
     async def delete_row():
         selected = [row for row in await aggrid.get_selected_rows()][0]
 
@@ -101,4 +127,4 @@ def page():
         'rowData': rows,
         'rowSelection': 'multiple',
         'stopEditingWhenCellsLoseFocus': True,
-    })  
+    }).on("cellValueChanged", update_name_change)
