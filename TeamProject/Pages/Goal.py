@@ -10,6 +10,7 @@ def get_goal():
         code,
         name,
         level,
+        course_id,
         description
     FROM goal    
     """
@@ -29,9 +30,10 @@ def insert_goal(args):
         code,
         name,
         level,
+        course_id,
         description
     )
-    VALUES (%s, %s, %s, %s)    
+    VALUES (%s, %s, %s, %s, %s)    
     """
 
     cursor.execute(stmt, args)
@@ -63,6 +65,7 @@ def page():
         {'field': 'code', 'editable': False, 'sortable': True},
         {'field': 'name', 'editable': False, 'sortable': True},
         {'field': 'level', 'editable': False, 'sortable': True},
+        {'field': 'course_id', 'editable': False, 'sortable': True},
         {'field': 'description', 'editable': True},
     ]
 
@@ -72,6 +75,7 @@ def page():
                 'Goal Code': ui.input(label='Type Goal Code'),
                 'Degree Name': ui.input(label='Type Degree Name'),
                 'Degree Level': ui.input(label='Type Degree Level'),
+                'Course Id': ui.input(label='Type Course Id'),
                 'Goal Description': ui.input(label='Goal Description')
             }
             # Save and Cancel buttons

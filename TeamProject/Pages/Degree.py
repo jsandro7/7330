@@ -11,12 +11,9 @@ def get_degrees():
         level
     FROM degree    
     """
-
     cursor.execute(stmt)
     rows = cursor.fetchall()
-
     conn.close()
-
     return rows
 
 def get_degrees_courses(args):
@@ -33,10 +30,8 @@ def get_degrees_courses(args):
     JOIN course c ON c.course_id = dc.course_id  
     WHERE d.name = %s AND d.level = %s
     """
-
     cursor.execute(stmt, args)
     rows = cursor.fetchall()
-
     conn.close()
 
     return rows
