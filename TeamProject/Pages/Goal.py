@@ -120,8 +120,9 @@ def page():
     async def update_description_change(e):
         row = e.args["data"]
 
-        update_goal([e.args['newValue'], row['code']])
-        ui.notify(f'Updated goal description: {e.args['newValue']}', color="positive")
+        newVal = e.args['newValue']
+        update_goal([newVal, row['code']])
+        ui.notify(f'Updated goal description: {newVal}', color="positive")
 
         rows.clear()
         rows.extend(get_goal())

@@ -232,8 +232,9 @@ def page():
         row = e.args["data"]
         selectedDegree = [row for row in await aggrid.get_selected_rows()][0]
         
-        update_degree_course([e.args['newValue'], row['course_id'], selectedDegree['name'], selectedDegree['level']])
-        ui.notify(f'Updated degree course Is Core: {e.args['newValue']}', color="positive")
+        newVal = e.args['newValue']
+        update_degree_course([newVal, row['course_id'], selectedDegree['name'], selectedDegree['level']])
+        ui.notify(f'Updated degree course Is Core: {newVal}', color="positive")
 
         rowsCourse.clear()
         rowsCourse.extend(get_degrees_courses([selectedDegree['name'], selectedDegree['level']]))

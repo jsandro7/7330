@@ -98,9 +98,9 @@ def page():
     
     async def update_name_change(e):
         row = e.args["data"]
-
-        update_instructor([e.args['newValue'], row['ID']])
-        ui.notify(f'Updated instructor Name: {e.args['newValue']}')
+        newVal = e.args['newValue']
+        update_instructor([newVal, row['ID']])
+        ui.notify(f'Updated instructor Name: {newVal}')
 
         rows.clear()
         rows.extend(get_instructor())
