@@ -24,15 +24,46 @@ def get_degrees_courses(args):
 
     stmt = """
     SELECT 
+        dc.name AS "Degree_Name",
+        dc.level AS "Degree_Level",   
         c.course_id,
         c.name,
-        dc.is_core
+        CASE dc.is_core
+                WHEN 1 THEN 'Yes'
+                WHEN 0 THEN 'No'
+                ELSE ''
+        END AS is_core
     FROM degree d
     JOIN degree_course dc ON d.name = dc.name AND d.level = dc.level
     JOIN course c ON c.course_id = dc.course_id  
     WHERE d.name = %s AND d.level = %s
     """
 
+    cursor.execute(stmt, args)
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return rows
+
+def get_degrees_goals(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor(dictionary=True)
+
+    stmt = """
+    SELECT 
+        dc.name AS "Degree_Name",
+        dc.level AS "Degree_Level",   
+        g.code AS "Goal_Code",
+        g.description AS "Goal_Description",
+        g.course_id AS "Course_Id",
+        c.name AS "Course_Name"
+    FROM degree d
+    JOIN degree_course dc ON d.name = dc.name AND d.level = dc.level
+    JOIN goal g ON g.course_id = dc.course_id and g.name = dc.name and g.level = dc.level
+    JOIN course c ON c.course_id = dc.course_id
+    WHERE d.name = %s AND d.level = %s
+    """
     cursor.execute(stmt, args)
     rows = cursor.fetchall()
 
@@ -97,6 +128,8 @@ def page():
     rowsCourses = []
 
     columnsCourses = [
+        {'name': 'Degree_Name', 'field':'Degree_Name', 'label': 'Degree Name' },
+        {'name': 'Degree_Level', 'field':'Degree_Level', 'label': 'Degree Level' },
         {'name': 'course_id', 'field':'course_id', 'label': 'Course ID' },
         {'name': 'name', 'field': 'name', 'label': 'Course Name'},
         {'name': 'is_core', 'field':'is_core', 'label': 'Is Core Course?' }       
@@ -109,13 +142,13 @@ def page():
     }
 
     async def filter_degree_courses():
-        if not (degrees_input.value):
+        if not (degrees_courese_input.value):
             ui.notify("All fields are required!", color="negative")
             return
 
         try:
             nonlocal rowsCourses
-            rowsCourses = get_degrees_courses(degrees_input.value.split('-'))
+            rowsCourses = get_degrees_courses(degrees_courese_input.value.split('-'))
             
             table_courses.rows = rowsCourses
             ui.notify("Filter applied successfully!", color="positive")
@@ -125,11 +158,9 @@ def page():
     ui.label('Degree Course:').style('font-size:25px; font-weight:bold; color:navy;')   
 
     with ui.row().classes("items-left"):     
-        degrees_input = ui.select(degrees_options, label="Degrees").classes("w-48")           
-        ui.button("Filter Sections", on_click=filter_degree_courses)
+        degrees_courese_input = ui.select(degrees_options, label="Degrees").classes("w-48")           
+        ui.button("Find Courses", on_click=filter_degree_courses)
     
-    
-
     table_courses =ui.table(
         rows=rowsCourses, columns=columnsCourses, 
         column_defaults={
@@ -153,7 +184,7 @@ def page():
 
     async def filter_degree_sections():
         if not (
-                degrees_input.value and
+                degrees_section_input.value and
                 start_year_input.value and 
                 start_semester_input.value and 
                 end_year_input.value and 
@@ -165,7 +196,7 @@ def page():
         try:
             nonlocal rowsSections
 
-            listParam = degrees_input.value.split('-')
+            listParam = degrees_section_input.value.split('-')
 
             listParam.extend([int(start_year_input.value),
                             start_semester_input.value,
@@ -183,7 +214,7 @@ def page():
     ui.label('Degree Sections:').style('font-size:25px; font-weight:bold; color:navy;')
 
     with ui.row().classes("items-left"):     
-        degrees_input = ui.select(degrees_options, label="Degrees").classes("w-48") 
+        degrees_section_input = ui.select(degrees_options, label="Degrees").classes("w-48") 
         start_year_input = ui.input("Start Year", placeholder="Enter Start Year").classes("w-48")
         start_semester_input = ui.select(["SP", "SM", "FA"], label="Start Semester").classes("w-48")
         end_year_input = ui.input("End Year", placeholder="Enter End Year").classes("w-48")
@@ -197,4 +228,80 @@ def page():
         'headerClasses': 'uppercase text-primary'},
     )
 
- 
+    ui.separator()
+
+    rowsGoals = []
+
+    columnsGoals = [
+        {'name': 'Degree_Name', 'field':'Degree_Name', 'label': 'Degree Name' },
+        {'name': 'Degree_Level', 'field':'Degree_Level', 'label': 'Degree Level' },
+        {'name': 'Goal_Code', 'field':'Goal_Code', 'label': 'Goal Code' },
+        {'name': 'Goal_Description', 'field':'Goal_Description', 'label': 'Goal Description'}  
+    ]
+
+    async def filter_degree_goals():
+        if not (degrees_goals_input.value):
+            ui.notify("All fields are required!", color="negative")
+            return
+
+        try:
+            nonlocal rowsCourses
+            rowsGoals = get_degrees_goals(degrees_goals_input.value.split('-'))
+            
+            table_goals.rows = rowsGoals
+            ui.notify("Filter applied successfully!", color="positive")
+        except Exception as e:
+            ui.notify(f"Error: {e}", color="negative")
+    
+    ui.label('Degree Goals:').style('font-size:25px; font-weight:bold; color:navy;')   
+
+    with ui.row().classes("items-left"):     
+        degrees_goals_input = ui.select(degrees_options, label="Degrees").classes("w-48")           
+        ui.button("Find Goals", on_click=filter_degree_goals)
+    
+    table_goals =ui.table(
+        rows=rowsGoals, columns=columnsGoals, 
+        column_defaults={
+        'align': 'left',
+        'headerClasses': 'uppercase text-primary'},
+    )
+
+    ui.separator()
+
+    rowsGoalsCourse = []
+
+    columnsGoalsCourse = [
+        {'name': 'Degree_Name', 'field':'Degree_Name', 'label': 'Degree Name' },
+        {'name': 'Degree_Level', 'field':'Degree_Level', 'label': 'Degree Level' },
+        {'name': 'Goal_Code', 'field':'Goal_Code', 'label': 'Goal Code' },
+        {'name': 'Goal_Description', 'field':'Goal_Description', 'label': 'Goal Description'},
+        {'name': 'Course_Id', 'field':'Course_Id', 'label': 'Course ID' },
+        {'name': 'Course_Name', 'field': 'Course_Name', 'label': 'Course Name'}  
+    ]
+
+    async def filter_degree_goals_courses():
+        if not (degrees_goals_course_input.value):
+            ui.notify("All fields are required!", color="negative")
+            return
+
+        try:
+            nonlocal rowsGoalsCourse
+            rowsGoalsCourse = get_degrees_goals(degrees_goals_course_input.value.split('-'))
+            
+            table_goals_course.rows = rowsGoalsCourse
+            ui.notify("Filter applied successfully!", color="positive")
+        except Exception as e:
+            ui.notify(f"Error: {e}", color="negative")
+    
+    ui.label('Degree Goal Courses:').style('font-size:25px; font-weight:bold; color:navy;')   
+
+    with ui.row().classes("items-left"):     
+        degrees_goals_course_input = ui.select(degrees_options, label="Degrees").classes("w-48")           
+        ui.button("Find Goals", on_click=filter_degree_goals_courses)
+    
+    table_goals_course =ui.table(
+        rows=rowsGoalsCourse, columns=columnsGoalsCourse, 
+        column_defaults={
+        'align': 'left',
+        'headerClasses': 'uppercase text-primary'},
+    )
