@@ -153,6 +153,8 @@ def page():
 
 
         result = await dialog
+        if(result is None):
+            return
         insert_degree(result)
 
         ui.notify(f'Degree added', color="positive")

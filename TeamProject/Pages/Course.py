@@ -170,6 +170,9 @@ def page():
                 ui.button('Cancel', on_click=lambda: dialog.close())
 
         result = await dialog
+        
+        if(result is None):
+            return
 
         selectedCourse = [row for row in await aggrid.get_selected_rows()][0]
 
