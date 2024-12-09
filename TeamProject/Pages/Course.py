@@ -186,9 +186,9 @@ def page():
 
         result = get_course_sections([selected['course_id']])
 
-        rows.clear()
-        rows.extend(result)
-        rows.update()
+        rowsSection.clear()
+        rowsSection.extend(result)
+        aggridSection.update()
     
     async def delete_selected():
         selected = [row for row in await aggrid.get_selected_rows()][0]
@@ -222,7 +222,7 @@ def page():
         'rowData': rows,
         'rowSelection': 'multiple',
         'stopEditingWhenCellsLoseFocus': True,
-    }).on('cellValueChanged', handle_row_select_change)
+    }).on('rowSelected', handle_row_select_change)
 
     with ui.row().classes('items-left'):
         ui.button('Remove Section From Course', on_click=deleteSection_selected)
