@@ -195,7 +195,7 @@ def page():
 
         delete_course([selected['course_id']])
 
-        ui.notify(f'Deleted course with ID {selected["course_id"]}')
+        ui.notify(f'Deleted course with ID {selected["course_id"]}', color="positive")
 
         rows.clear()
         rows.extend(get_course())
@@ -207,7 +207,7 @@ def page():
 
         delete_section([selected['section_id']])    
 
-        ui.notify(f'Deleted section with ID {selected["section_id"]}')    
+        ui.notify(f'Deleted section with ID {selected["section_id"]}', color="positive")    
 
         rowsSection.clear()
         rowsSection.extend(get_course_sections([selectedCourse['course_id']]))

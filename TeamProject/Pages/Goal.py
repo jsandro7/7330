@@ -35,7 +35,19 @@ def insert_goal(args):
     )
     VALUES (%s, %s, %s, %s, %s)    
     """
+    cursor.execute(stmt, args)
+    conn.commit()
+    conn.close()
 
+def update_goal(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor()
+
+    stmt = """
+    UPDATE goal
+    SET description = %s
+    WHERE code = %s
+    """
     cursor.execute(stmt, args)
     conn.commit()
     conn.close()
@@ -48,7 +60,6 @@ def delete_goal(args):
     DELETE FROM goal
     WHERE code = %s AND name = %s AND level = %s
     """
-
     cursor.execute(stmt, args)
     conn.commit()
     conn.close()
@@ -89,6 +100,8 @@ def page():
         result = await dialog
         insert_goal(result)
 
+        ui.notify(f'Goal Added', color="positive")
+
         rows.clear()
         rows.extend(get_goal())
         aggrid.update()
@@ -97,7 +110,18 @@ def page():
         selected = [row for row in await aggrid.get_selected_rows()][0]
 
         delete_goal([selected["code"],selected["name"], selected["level"]])
-        ui.notify(f'Deleted goal with Code {selected["code"]} Name: {selected["name"]} Level: {selected["level"] }')
+        ui.notify(f'Deleted goal with Code {selected["code"]} Name: {selected["name"]} Level: {selected["level"] }', color="positive")
+
+        rows.clear()
+        rows.extend(get_goal())
+        aggrid.update()
+
+    
+    async def update_description_change(e):
+        row = e.args["data"]
+
+        update_goal([e.args['newValue'], row['code']])
+        ui.notify(f'Updated goal description: {e.args['newValue']}', color="positive")
 
         rows.clear()
         rows.extend(get_goal())
@@ -112,4 +136,4 @@ def page():
         'rowData': rows,
         'rowSelection': 'multiple',
         'stopEditingWhenCellsLoseFocus': True,
-    })
+    }).on("cellValueChanged", update_description_change)
