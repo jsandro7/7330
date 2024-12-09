@@ -122,10 +122,10 @@ def page():
     columnsSection = [
         {'field': 'section_id', 'editable': False, 'sortable': True},
         {'field': 'course_id', 'editable': False, 'sortable': True},
-        {'field': 'id', 'editable': False, 'sortable': True},
+        {'field': 'ID', 'editable': False, 'sortable': True},
         {'field': 'semester', 'editable': False, 'sortable': True},
         {'field': 'year', 'editable': False, 'sortable': True},
-        {'field': 'students_enrolled', 'editable': False, 'sortable': True},
+        {'field': 'student_enrolled', 'editable': False, 'sortable': True},
     ]
 
     rowsSection = []
