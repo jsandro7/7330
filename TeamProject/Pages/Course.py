@@ -11,7 +11,6 @@ def get_course():
         name
     FROM course    
     """
-
     cursor.execute(stmt)
     rows = cursor.fetchall()
     conn.close()
@@ -34,7 +33,6 @@ def get_course_sections(args):
     JOIN course c ON c.course_id = s.course_id
     WHERE c.course_id = %s
     """
-
     cursor.execute(stmt, args)
     rows = cursor.fetchall()
 
@@ -54,7 +52,6 @@ def insert_course(args):
     )
     VALUES (%s, %s)    
     """
-
     cursor.execute(stmt, args)
     conn.commit()
     conn.close()
@@ -67,7 +64,6 @@ def delete_course(args):
     DELETE FROM course
     WHERE course_id = %s
     """
-
     cursor.execute(stmt, args)
     conn.commit()
     conn.close()
@@ -88,7 +84,6 @@ def insert_section(args):
     )
     VALUES (%s, %s, %s, %s, %s, %s)    
     """
-
     cursor.execute(stmt, args)
     conn.commit()
     conn.close()
@@ -99,9 +94,34 @@ def delete_section(args):
 
     stmt = """
     DELETE FROM section
-    WHERE ID = %s
+    WHERE section_id = %s
     """
+    cursor.execute(stmt, args)
+    conn.commit()
+    conn.close()
 
+def update_section_enrollement(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor()
+
+    stmt = """
+    UPDATE section
+    SET student_enrolled = %s 
+    WHERE section_id = %s
+    """
+    cursor.execute(stmt, args)
+    conn.commit()
+    conn.close()
+
+def update_course(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor()
+
+    stmt = """
+    UPDATE course
+    SET name = %s 
+    WHERE course_id = %s
+    """
     cursor.execute(stmt, args)
     conn.commit()
     conn.close()
@@ -122,10 +142,10 @@ def page():
     columnsSection = [
         {'field': 'section_id', 'editable': False, 'sortable': True},
         {'field': 'course_id', 'editable': False, 'sortable': True},
-        {'field': 'ID', 'editable': False, 'sortable': True},
+        {'field': 'ID', 'headerName': 'Instructor ID', 'editable': False, 'sortable': True},
         {'field': 'semester', 'editable': False, 'sortable': True},
         {'field': 'year', 'editable': False, 'sortable': True},
-        {'field': 'student_enrolled', 'editable': False, 'sortable': True},
+        {'field': 'student_enrolled', 'editable': True, 'sortable': True},
     ]
 
     rowsSection = []
@@ -146,6 +166,10 @@ def page():
 
 
         result = await dialog
+
+        if(result is None):
+            return
+
         insert_course(result)
 
         rows.clear()
@@ -171,6 +195,9 @@ def page():
 
         result = await dialog
         
+        if(result is None):
+            return
+
         if(result is None):
             return
 
@@ -216,6 +243,30 @@ def page():
         rowsSection.extend(get_course_sections([selectedCourse['course_id']]))
         aggridSection.update()
 
+
+    async def update_enrollment_change(e):
+        row = e.args["data"]
+        selectedCourse = [row for row in await aggrid.get_selected_rows()][0]
+        
+        newVal = e.args['newValue']
+        update_section_enrollement([newVal, row['section_id']])
+        ui.notify(f'Updated section student enrolled: {newVal}', color="positive")
+
+        rowsSection.clear()
+        rowsSection.extend(get_course_sections([selectedCourse['course_id']]))
+        aggridSection.update()
+
+    async def update_name_change(e):
+        row = e.args["data"]
+        
+        newVal = e.args['newValue']
+        update_course([newVal, row['course_id']])
+        ui.notify(f'Updated course name: {newVal}', color="positive")
+
+        rows.clear()
+        rows.extend(get_course())
+        aggrid.update()
+
     with ui.row().classes('items-left'):
         ui.button('Remove Course', on_click=delete_selected)
         ui.button('New Course', on_click=add_row)
@@ -225,7 +276,7 @@ def page():
         'rowData': rows,
         'rowSelection': 'multiple',
         'stopEditingWhenCellsLoseFocus': True,
-    }).on('rowSelected', handle_row_select_change)
+    }).on('rowSelected', handle_row_select_change).on("cellValueChanged", update_name_change)
 
     with ui.row().classes('items-left'):
         ui.button('Remove Section From Course', on_click=deleteSection_selected)
@@ -236,4 +287,4 @@ def page():
         'rowData': rowsSection,
         'rowSelection': 'single',
         'stopEditingWhenCellsLoseFocus': True,
-    })
+    }).on("cellValueChanged", update_enrollment_change)
