@@ -139,24 +139,24 @@ VALUES
     ('405', '112A', 'Report', 'Testing comments', 11, 12, 5, 7),
     ('406', '112A', 'Exam', 'Mid-term evaluation', 15, 10, 3, 2),
     ('407', '112A', 'Project', 'Final project', 20, 5, 5, 0),
-    ('505', '3569','Exam', 'Ph.D level exam', 15, 5, 1, 2),
-    ('506', '112A','Report', 'AI course report', 18, 7, 3, 2),
-    ('515', '678D','Project', 'Machine learning project', 18, 6, 1, 0),
-    ('516', '678D','Exam', 'ML final exam', 20, 5, 3, 2),
-    ('525', '457A','Quiz', 'Signal processing quiz', 10, 15, 5, 1),
-    ('526', '457A','Lab', 'Signal processing lab', 14, 12, 4, 0),
-    ('535', '789E','Lab', 'Thermodynamics lab', 20, 10, 8, 3),
-    ('545', '234B','Presentation', 'Data visualization presentation', 12, 8, 5, 2),
-    ('555', '678D','Project', 'Agile development project', 25, 3, 2, 0),
-    ('556', '678D','Exam', 'Final exam on agile concepts', 22, 7, 1, 1),
-    ('557', '678D','Lab', 'Agile lab sessions', 24, 5, 0, 0),
+    ('415', '235B', 'Homework', 'Testing comments 2', 21, 2, 3, 1),
+    ('416', '235B', 'Exam', 'Operating Systems exam', 12, 10, 7, 5),
 
     -- Partially Entered Evaluations
-    ('415', '235B', NULL, 'Testing comments 2', 21, 2, 3, NULL), 
-    ('416', '235B', 'Exam', NULL, 12, NULL, 7, 5),               
-    ('417', '235B', NULL, NULL, 14, 8, NULL, NULL),              
+    ('417', '235B', 'Lab', NULL, 14, 8, 2, NULL),
+    ('425', '3569', 'Quiz', NULL, 10, 5, NULL, NULL),
+    ('426', '3569', NULL, 'Final exam', NULL, 10, 3, 5),
+    ('427', '3569', 'Presentation', 'Capstone project', NULL, NULL, NULL, 1),
+    ('505', '3569', 'Exam', 'Ph.D level exam', 15, NULL, NULL, NULL),
 
-    -- Not Entered Evaluations
-    ('425', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-    ('426', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-    ('427', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    -- Not Entered Evaluations (Only Goal Assigned)
+    ('506', '112A', NULL, NULL, NULL, NULL, NULL, NULL),
+    ('515', '678D', NULL, NULL, NULL, NULL, NULL, NULL),
+    ('516', '678D', NULL, NULL, NULL, NULL, NULL, NULL),
+    ('525', '457A', NULL, NULL, NULL, NULL, NULL, NULL),
+    ('526', '457A', NULL, NULL, NULL, NULL, NULL, NULL),
+    ('535', '789E', NULL, NULL, NULL, NULL, NULL, NULL),
+    ('545', '234B', NULL, NULL, NULL, NULL, NULL, NULL),
+    ('555', '678D', NULL, NULL, NULL, NULL, NULL, NULL),
+    ('556', '678D', NULL, NULL, NULL, NULL, NULL, NULL),
+    ('557', '678D', NULL, NULL, NULL, NULL, NULL, NULL);
