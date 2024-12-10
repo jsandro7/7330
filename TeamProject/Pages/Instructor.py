@@ -89,6 +89,10 @@ def page():
 
 
         result = await dialog
+        
+        if(result is None):
+            return
+        
         insert_instructor(result)
 
         rows.clear()
