@@ -80,3 +80,10 @@ CREATE TABLE IF NOT EXISTS evaluation (
     CONSTRAINT FK_evaluation_section_id FOREIGN KEY (section_id) REFERENCES section(section_id),
     CONSTRAINT FK_evaluation_goal FOREIGN KEY (code) REFERENCES goal(code)
 );
+
+
+CREATE TABLE IF NOT EXISTS eval_methods(
+	name VARCHAR(50),
+	PRIMARY KEY(name)
+)
+

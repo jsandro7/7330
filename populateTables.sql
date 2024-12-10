@@ -160,3 +160,8 @@ VALUES
     ('555', '678D', NULL, NULL, NULL, NULL, NULL, NULL),
     ('556', '678D', NULL, NULL, NULL, NULL, NULL, NULL),
     ('557', '678D', NULL, NULL, NULL, NULL, NULL, NULL);
+    
+    
+INSERT INTO eval_methods
+(name)
+VALUES ('Homework'),('Project'),('Quiz'),('Oral Presentation'),('Report'),('Mid-Term'),('Final Exam')
