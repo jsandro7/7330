@@ -75,12 +75,12 @@ def insert_section(args):
     stmt = """
     INSERT INTO section
     (
-        section_id,
-        course_id,
+        section_id,        
         ID,
         semester,
         year,
-        student_enrolled
+        student_enrolled,
+        course_id
     )
     VALUES (%s, %s, %s, %s, %s, %s)    
     """

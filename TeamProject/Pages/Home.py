@@ -15,7 +15,7 @@ def page():
                 ui.item('Course').on_click(lambda:  ui.navigate.to("/course"))
                 ui.item('Degree').on_click(lambda:  ui.navigate.to("/degree"))               
                 ui.item('Evaluation').on_click(lambda:  ui.navigate.to("/evaluations"))
-                ui.item('Goal').on_click(lambda:  ui.navigate.to("/evaluations"))
+                ui.item('Goal').on_click(lambda:  ui.navigate.to("/goal"))
                 ui.item('Instructor').on_click(lambda:  ui.navigate.to("/instructor"))
             ui.label('Reports').style('font-size:25px; font-weight:bold; color:navy;')
             with ui.list().props('dense separator'):

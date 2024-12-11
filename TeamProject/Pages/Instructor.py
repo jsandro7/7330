@@ -94,6 +94,7 @@ def page():
             return
         
         insert_instructor(result)
+        ui.notify(f'Instructor Added', color="positive")
 
         rows.clear()
         rows.extend(get_instructor())
@@ -104,7 +105,7 @@ def page():
         row = e.args["data"]
         newVal = e.args['newValue']
         update_instructor([newVal, row['ID']])
-        ui.notify(f'Updated instructor Name: {newVal}')
+        ui.notify(f'Updated instructor Name: {newVal}', color="positive")
 
         rows.clear()
         rows.extend(get_instructor())
@@ -116,7 +117,7 @@ def page():
 
         delete_instructor([selected['ID']])
 
-        ui.notify(f'Deleted instructor ID: {selected["ID"]}, Name: {selected["name"]}')
+        ui.notify(f'Deleted instructor ID: {selected["ID"]}, Name: {selected["name"]}', color="positive")
 
         rows.clear()
         rows.extend(get_instructor())

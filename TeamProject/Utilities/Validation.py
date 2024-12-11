@@ -35,10 +35,7 @@ def validate_year(entry):
     year = entry.value.strip()
     return (
         year != "" and
-        len(year) == 5 and
-        year[:2].isdigit() and
-        year[3:5].isdigit() and
-        year[2] == "-"
+        len(year) == 4        
     )
 
 def validate_student_enrolled(entry):

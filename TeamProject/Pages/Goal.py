@@ -20,6 +20,22 @@ def get_goal():
     conn.close()
     return rows
 
+def get_degrees():
+    conn = MySql.create_conn()
+    cursor = conn.cursor(dictionary=True)
+
+    stmt = """
+    SELECT        
+        name       
+    FROM degree    
+    """
+    cursor.execute(stmt)
+    rows = cursor.fetchall()
+
+    conn.close()
+    return rows
+
+
 def insert_goal(args):
     conn = MySql.create_conn()
     cursor = conn.cursor()
@@ -64,6 +80,22 @@ def delete_goal(args):
     conn.commit()
     conn.close()
 
+def get_courses():
+    conn = MySql.create_conn()
+    cursor = conn.cursor(dictionary=True)
+
+    stmt = """
+    SELECT
+        course_id,
+        name
+    FROM course    
+    """
+    cursor.execute(stmt)
+    rows = cursor.fetchall()
+    conn.close()
+
+    return rows
+
 def handle_save(ui, dialog, inputs):
     if Validation.check_entries(ui, inputs):
         dialog.submit([field.value for field in inputs.values()])
@@ -81,12 +113,25 @@ def page():
     ]
 
     async def add_row():
+
+        degrees = get_degrees()
+        degree_options = {
+            degree["name"]: f"{degree['name']}"
+            for degree in degrees
+        }    
+
+        courses = get_courses()
+        course_options = {
+            course["course_id"]: f"{course['name']}"
+            for course in courses
+        }      
+
         with ui.dialog() as dialog, ui.card():
             inputs = {
                 'Goal Code': ui.input(label='Type Goal Code'),
-                'Degree Name': ui.input(label='Type Degree Name'),
-                'Degree Level': ui.input(label='Type Degree Level'),
-                'Course Id': ui.input(label='Type Course Id'),
+                'Degree Name': ui.select(degree_options, label="Select Degree").classes("w-48"),
+                'Degree Level': ui.select(["BA", "BS", "MS", 'Ph.D'], label="Select Level").classes("w-48"),
+                'Course Id': ui.select(course_options, label="Select Course").classes("w-48"),
                 'Goal Description': ui.input(label='Goal Description')
             }
             # Save and Cancel buttons

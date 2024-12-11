@@ -63,22 +63,26 @@ CREATE TABLE IF NOT EXISTS goal (
     level VARCHAR(255),
     course_id CHAR(9),
     description TEXT,
-    CONSTRAINT FK_goal_name FOREIGN KEY (name, level, course_id) REFERENCES degree_course(name, level, course_id)
+    PRIMARY KEY (code, name, level),
+    CONSTRAINT FK_goal_name FOREIGN KEY (name, level) REFERENCES degree(name, level),
+    CONSTRAINT FK_goal_course FOREIGN KEY (course_id) REFERENCES course(course_id)
 );
 
 -- Creating goal table
 CREATE TABLE IF NOT EXISTS evaluation (
     section_id CHAR(3),
     code CHAR(4),
+    name VARCHAR(255),
+    level VARCHAR(255),    
     evaluation_method VARCHAR(255),
     comment TEXT,
     A_count INT,
 	B_count INT,
     C_count INT,
     F_count INT,
-    PRIMARY KEY (section_id, code),
+    PRIMARY KEY (section_id, code, name, level),
     CONSTRAINT FK_evaluation_section_id FOREIGN KEY (section_id) REFERENCES section(section_id),
-    CONSTRAINT FK_evaluation_goal FOREIGN KEY (code) REFERENCES goal(code)
+    CONSTRAINT FK_evaluation_goal FOREIGN KEY (code, name, level) REFERENCES goal(code, name, level)
 );
 
 

@@ -169,6 +169,8 @@ def insert_evalution(args):
     INSERT INTO evaluation
     (
         section_id,
+        name,
+        level,
         code,
         evaluation_method,
         comment,
@@ -177,11 +179,32 @@ def insert_evalution(args):
         C_count, 
         F_count         
     )
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)    
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)    
     """
     cursor.execute(stmt, args)
     conn.commit()
     conn.close()
+
+
+def get_related_degree(args):
+    conn = MySql.create_conn()
+    cursor = conn.cursor(dictionary=True)
+
+    stmt = """
+    SELECT       
+        dc.name,
+        dc.level
+    FROM course c
+    JOIN section s ON c.course_id = s.course_id
+    JOIN degree_course dc ON c.course_id = dc.course_id
+    WHERE s.section_id = %s 
+    LIMIT 1
+    """
+    cursor.execute(stmt, args)
+    rows = cursor.fetchall()
+
+    conn.close()
+    return rows
 
 def handle_save(ui, dialog, inputs):
     if Validation.check_entries(ui, inputs):
@@ -311,10 +334,13 @@ def page():
         result = await dialog       
 
         if(not result):
-            return       
+            return   
+
+
+        degree = get_related_degree([selectedSection['section_id']])[0]    
 
         
-        newList = [selectedSection['section_id'], result[0], result[1],result[2], int(result[3]), int(result[4]),int(result[5]),int(result[6])]
+        newList = [selectedSection['section_id'], degree['name'], degree['level'], result[0], result[1],result[2], int(result[3]), int(result[4]),int(result[5]),int(result[6])]
 
         insert_evalution(newList)
 
